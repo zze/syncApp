@@ -1,0 +1,45 @@
+<!--
+/*
+ * Copyright (C) syncApp Zze jz3731@gmail.com
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<?xml version="1.0" encoding="utf-8"?>
+<templates application="syncApp" templategroups="a:1:{s:12:&quot;skin_syncApp&quot;;s:5:&quot;exact&quot;;}">
+  <templategroup group="skin_syncApp">
+    <template>
+      <template_group>skin_syncApp</template_group>
+      <template_content><![CDATA[<!--no data in this master skin-->]]></template_content>
+      <template_name>appIndexTemplate</template_name>
+      <template_data>$test</template_data>
+      <template_updated>1342433697</template_updated>
+      <template_removable>0</template_removable>
+      <template_user_added>0</template_user_added>
+      <template_user_edited>0</template_user_edited>
+      <template_master_key>root</template_master_key>
+    </template>
+    <template>
+      <template_group>skin_syncApp</template_group>
+      <template_content><![CDATA[<!--no data in this master skin-->]]></template_content>
+      <template_name>test</template_name>
+      <template_data/>
+      <template_updated>1342433697</template_updated>
+      <template_removable>0</template_removable>
+      <template_user_added>0</template_user_added>
+      <template_user_edited>0</template_user_edited>
+      <template_master_key>root</template_master_key>
+    </template>
+  </templategroup>
+</templates>

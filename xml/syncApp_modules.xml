@@ -1,0 +1,51 @@
+<!--
+/*
+ * Copyright (C) syncApp Zze jz3731@gmail.com
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<?xml version="1.0" encoding="utf-8"?>
+<moduleexport>
+  <modulegroup>
+    <module>
+      <sys_module_title>SyncApp Public Module</sys_module_title>
+      <sys_module_application>syncApp</sys_module_application>
+      <sys_module_key>sync</sys_module_key>
+      <sys_module_description/>
+      <sys_module_version>1.0</sys_module_version>
+      <sys_module_parent/>
+      <sys_module_protected>0</sys_module_protected>
+      <sys_module_tables/>
+      <sys_module_hooks/>
+      <sys_module_visible>1</sys_module_visible>
+      <sys_module_position>14</sys_module_position>
+      <sys_module_admin>0</sys_module_admin>
+    </module>
+    <module>
+      <sys_module_title>SyncApp Admin Module</sys_module_title>
+      <sys_module_application>syncApp</sys_module_application>
+      <sys_module_key>syncacp</sys_module_key>
+      <sys_module_description/>
+      <sys_module_version>1.0</sys_module_version>
+      <sys_module_parent/>
+      <sys_module_protected>0</sys_module_protected>
+      <sys_module_tables/>
+      <sys_module_hooks/>
+      <sys_module_visible>1</sys_module_visible>
+      <sys_module_position>13</sys_module_position>
+      <sys_module_admin>1</sys_module_admin>
+    </module>
+  </modulegroup>
+</moduleexport>

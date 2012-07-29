@@ -1,0 +1,202 @@
+<!--
+/*
+ * Copyright (C) syncApp Zze jz3731@gmail.com
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<?xml version="1.0" encoding="utf-8"?>
+<settingexport>
+  <settinggroup>
+    <setting>
+      <conf_is_title>1</conf_is_title>
+      <conf_title_keyword>syncapp</conf_title_keyword>
+      <conf_title_title>General</conf_title_title>
+      <conf_title_desc/>
+      <conf_title_tab>SyncApp</conf_title_tab>
+      <conf_title_app>syncApp</conf_title_app>
+      <conf_title_noshow>0</conf_title_noshow>
+    </setting>
+    <setting>
+      <conf_title>MySQL IP</conf_title>
+      <conf_description/>
+      <conf_group>44</conf_group>
+      <conf_type>input</conf_type>
+      <conf_key>syncapp_mysql_ip</conf_key>
+      <conf_default>localhost</conf_default>
+      <conf_extra/>
+      <conf_evalphp/>
+      <conf_protected>0</conf_protected>
+      <conf_position>2</conf_position>
+      <conf_start_group>MySQL</conf_start_group>
+      <conf_add_cache>1</conf_add_cache>
+      <conf_keywords/>
+      <conf_title_keyword>syncapp</conf_title_keyword>
+      <conf_is_title>0</conf_is_title>
+    </setting>
+    <setting>
+      <conf_title>MySQL User</conf_title>
+      <conf_description/>
+      <conf_group>44</conf_group>
+      <conf_type>input</conf_type>
+      <conf_key>syncapp_mysql_user</conf_key>
+      <conf_default/>
+      <conf_extra/>
+      <conf_evalphp/>
+      <conf_protected>0</conf_protected>
+      <conf_position>3</conf_position>
+      <conf_start_group/>
+      <conf_add_cache>1</conf_add_cache>
+      <conf_keywords/>
+      <conf_title_keyword>syncapp</conf_title_keyword>
+      <conf_is_title>0</conf_is_title>
+    </setting>
+    <setting>
+      <conf_title>MySQL Password</conf_title>
+      <conf_description/>
+      <conf_group>44</conf_group>
+      <conf_type>input</conf_type>
+      <conf_key>syncapp_mysql_password</conf_key>
+      <conf_default/>
+      <conf_extra/>
+      <conf_evalphp/>
+      <conf_protected>0</conf_protected>
+      <conf_position>4</conf_position>
+      <conf_start_group/>
+      <conf_add_cache>1</conf_add_cache>
+      <conf_keywords/>
+      <conf_title_keyword>syncapp</conf_title_keyword>
+      <conf_is_title>0</conf_is_title>
+    </setting>
+    <setting>
+      <conf_title>Character database</conf_title>
+      <conf_description/>
+      <conf_group>44</conf_group>
+      <conf_type>input</conf_type>
+      <conf_key>syncapp_character_database</conf_key>
+      <conf_default>characters</conf_default>
+      <conf_extra/>
+      <conf_evalphp/>
+      <conf_protected>0</conf_protected>
+      <conf_position>5</conf_position>
+      <conf_start_group/>
+      <conf_add_cache>1</conf_add_cache>
+      <conf_keywords/>
+      <conf_title_keyword>syncapp</conf_title_keyword>
+      <conf_is_title>0</conf_is_title>
+    </setting>
+    <setting>
+      <conf_title>Realm Database</conf_title>
+      <conf_description/>
+      <conf_group>44</conf_group>
+      <conf_type>input</conf_type>
+      <conf_key>syncapp_realm_database</conf_key>
+      <conf_default>auth</conf_default>
+      <conf_extra/>
+      <conf_evalphp/>
+      <conf_protected>0</conf_protected>
+      <conf_position>5</conf_position>
+      <conf_start_group/>
+      <conf_add_cache>1</conf_add_cache>
+      <conf_keywords/>
+      <conf_title_keyword>syncapp</conf_title_keyword>
+      <conf_is_title>0</conf_is_title>
+    </setting>
+    <setting>
+      <conf_title>Enabled</conf_title>
+      <conf_description/>
+      <conf_group>44</conf_group>
+      <conf_type>yes_no</conf_type>
+      <conf_key>syncapp_enabled_soap</conf_key>
+      <conf_default/>
+      <conf_extra/>
+      <conf_evalphp/>
+      <conf_protected>0</conf_protected>
+      <conf_position>6</conf_position>
+      <conf_start_group>Soap</conf_start_group>
+      <conf_add_cache>1</conf_add_cache>
+      <conf_keywords/>
+      <conf_title_keyword>syncapp</conf_title_keyword>
+      <conf_is_title>0</conf_is_title>
+    </setting>
+    <setting>
+      <conf_title>IP</conf_title>
+      <conf_description/>
+      <conf_group>44</conf_group>
+      <conf_type>input</conf_type>
+      <conf_key>syncapp_soap_ip</conf_key>
+      <conf_default>localhost</conf_default>
+      <conf_extra/>
+      <conf_evalphp/>
+      <conf_protected>0</conf_protected>
+      <conf_position>7</conf_position>
+      <conf_start_group/>
+      <conf_add_cache>1</conf_add_cache>
+      <conf_keywords/>
+      <conf_title_keyword>syncapp</conf_title_keyword>
+      <conf_is_title>0</conf_is_title>
+    </setting>
+    <setting>
+      <conf_title>Soap user</conf_title>
+      <conf_description/>
+      <conf_group>44</conf_group>
+      <conf_type>input</conf_type>
+      <conf_key>syncapp_soap_user</conf_key>
+      <conf_default/>
+      <conf_extra/>
+      <conf_evalphp/>
+      <conf_protected>1</conf_protected>
+      <conf_position>8</conf_position>
+      <conf_start_group/>
+      <conf_add_cache>1</conf_add_cache>
+      <conf_keywords/>
+      <conf_title_keyword>syncapp</conf_title_keyword>
+      <conf_is_title>0</conf_is_title>
+    </setting>
+    <setting>
+      <conf_title>Soap password</conf_title>
+      <conf_description/>
+      <conf_group>44</conf_group>
+      <conf_type>input</conf_type>
+      <conf_key>syncapp_soap_password</conf_key>
+      <conf_default/>
+      <conf_extra/>
+      <conf_evalphp/>
+      <conf_protected>1</conf_protected>
+      <conf_position>9</conf_position>
+      <conf_start_group/>
+      <conf_add_cache>1</conf_add_cache>
+      <conf_keywords/>
+      <conf_title_keyword>syncapp</conf_title_keyword>
+      <conf_is_title>0</conf_is_title>
+    </setting>
+    <setting>
+      <conf_title>Email Vaildate</conf_title>
+      <conf_description/>
+      <conf_group>44</conf_group>
+      <conf_type>yes_no</conf_type>
+      <conf_key>syncapp_email_validate</conf_key>
+      <conf_default>0</conf_default>
+      <conf_extra/>
+      <conf_evalphp/>
+      <conf_protected>0</conf_protected>
+      <conf_position>10</conf_position>
+      <conf_start_group>Email</conf_start_group>
+      <conf_add_cache>1</conf_add_cache>
+      <conf_keywords/>
+      <conf_title_keyword>syncapp</conf_title_keyword>
+      <conf_is_title>0</conf_is_title>
+    </setting>
+  </settinggroup>
+</settingexport>
