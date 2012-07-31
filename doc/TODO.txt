@@ -1,4 +1,4 @@
 TODO: 
-* Add lang stings
+* Add language strings
 * Finish ACP
-* Add more to this list :|
+* Make use(s) of the public module
