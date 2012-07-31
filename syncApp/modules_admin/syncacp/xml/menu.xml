@@ -18,18 +18,18 @@
  */
 -->
 <menu>
-	<tabitems>
-		<item>
-			<title>TODO</title>
-			<subitems>
-				<subitem>
-					<subitemtitle>TODO</subitemtitle>
-					<subsection>syncacp</subsection>
-					<subitemurl></subitemurl>
-					<subitemrolekey></subitemrolekey>
-					<subisredirect>0</subisredirect>
-				</subitem>
-			</subitems>
-		</item>
-	</tabitems>
+    <tabitems>
+        <item>
+            <title>TODO</title>
+            <subitems>
+                <subitem>
+                    <subitemtitle>TODO</subitemtitle>
+                    <subsection>syncacp</subsection>
+                    <subitemurl></subitemurl>
+                    <subitemrolekey></subitemrolekey>
+                    <subisredirect>0</subisredirect>
+                </subitem>
+            </subitems>
+        </item>
+    </tabitems>
 </menu>

@@ -31,41 +31,41 @@ public function __destruct()
  */
 public function acp_group_form_main( $group, $tabId ) {
 
-	$form							= array();
-	//$form['g_ID']			= $this->registry->output->formInput( "syncapp_group_id", '4' );
-	$form['realm_id']		= $this->registry->output->formInput( "syncapp_realm_id", '-1' );
-	$form_server_prem		= ipsRegistry::getClass('output')->formDropdown( "syncapp_server_prem", array( array( '3', 'Administrator' ), array( '2', 'Moderator' ), array( '1', 'Member'), array( '0', 'Banned' )  ) );
-	//ipsRegistry::getClass('output')->formMultiDropdown( "tets", array( array( 'admin', 'Administrator' ), array( 'mod', 'Moderator' ), array( 'banned', 'Banned' )  ), 8, 'mgroup_others' ); //
+    $form                           = array();
+    //$form['g_ID']         = $this->registry->output->formInput( "syncapp_group_id", '4' );
+    $form['realm_id']       = $this->registry->output->formInput( "syncapp_realm_id", '-1' );
+    $form_server_prem       = ipsRegistry::getClass('output')->formDropdown( "syncapp_server_prem", array( array( '3', 'Administrator' ), array( '2', 'Moderator' ), array( '1', 'Member'), array( '0', 'Banned' )  ) );
+    //ipsRegistry::getClass('output')->formMultiDropdown( "tets", array( array( 'admin', 'Administrator' ), array( 'mod', 'Moderator' ), array( 'banned', 'Banned' )  ), 8, 'mgroup_others' ); //
 
 
 $IPBHTML = "";
 
 $IPBHTML .= <<<EOF
 
-	<div id='tab_GROUPS_{$tabId}_content'>
-	        <table class='ipsTable double_pad'>
-	                <tr>
-	                        <th colspan='2'>Group options</th>
-	                </tr>
-	                 <tr>
-	                         <td class='field_title'>
-	                                <strong class='title'>Realm id:</strong>
-	                        </td>
-	                         <td class='field_field'>
-	                         {$form['realm_id']}<br />
-	                         <span class='desctext'></span>
-	                 </td>
-	                 </tr>
-	                 <tr>
-	                         <td class='field_title'>
-	                                <strong class='title'>Server premissions group:</strong>
-	                        </td>
-	                         <td class='field_field'>
-	                         {$form_server_prem}<br />
-	                         <span class='desctext'></span>
-	                 </td>
-	                 </tr>
-	   </table>
+    <div id='tab_GROUPS_{$tabId}_content'>
+            <table class='ipsTable double_pad'>
+                    <tr>
+                            <th colspan='2'>Group options</th>
+                    </tr>
+                     <tr>
+                             <td class='field_title'>
+                                    <strong class='title'>Realm id:</strong>
+                            </td>
+                             <td class='field_field'>
+                             {$form['realm_id']}<br />
+                             <span class='desctext'></span>
+                     </td>
+                     </tr>
+                     <tr>
+                             <td class='field_title'>
+                                    <strong class='title'>Server premissions group:</strong>
+                            </td>
+                             <td class='field_field'>
+                             {$form_server_prem}<br />
+                             <span class='desctext'></span>
+                     </td>
+                     </tr>
+       </table>
 </div>
 
 EOF;
@@ -82,7 +82,7 @@ public function acp_group_form_tabs( $group, $tabId ) {
 $IPBHTML = "";
 
 $IPBHTML .= <<<EOF
-	<li id='tab_GROUPS_{$tabId}' class=''>syncApp</li>
+    <li id='tab_GROUPS_{$tabId}' class=''>syncApp</li>
 EOF;
 
 return $IPBHTML;

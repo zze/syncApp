@@ -21,43 +21,43 @@
  */
 class public_syncApp_sync_sync extends ipsCommand
 {
-	/**
-	 * doExecute is the method that is ran when the section is accessed
-	 */
-	public function doExecute( ipsRegistry $registry )
-	{
-		//-----------------------------------------
-		// Load the language file (in the cache/lang_cache directory)
-		//-----------------------------------------
+    /**
+     * doExecute is the method that is ran when the section is accessed
+     */
+    public function doExecute( ipsRegistry $registry )
+    {
+        //-----------------------------------------
+        // Load the language file (in the cache/lang_cache directory)
+        //-----------------------------------------
 
-		$this->registry->class_localization->loadLanguageFile( array( 'public_lang' ) ); // Will automatically prepend "(app)_"
+        $this->registry->class_localization->loadLanguageFile( array( 'public_lang_syncApp' ) ); // Will automatically prepend "(app)_"
 
-		$this->html = $this->registry->output->loadTemplate( 'cp_skin_syncApp' );
-		//-----------------------------------------
-		// Set Page title
-		//-----------------------------------------
+        $this->html = $this->registry->output->loadTemplate( 'cp_skin_syncApp' );
+        //-----------------------------------------
+        // Set Page title
+        //-----------------------------------------
 
-		$this->registry->output->setTitle( $this->lang->words['page_title'] );
+        $this->registry->output->setTitle( $this->lang->words['page_title'] );
 
-		//-----------------------------------------
-		// Set Pagination
-		//-----------------------------------------
+        //-----------------------------------------
+        // Set Pagination
+        //-----------------------------------------
 
-		$this->registry->output->addNavigation( $this->lang->words['page_title'], 'app=syncApp' );
+        $this->registry->output->addNavigation( $this->lang->words['page_title'], 'app=syncApp' );
 
-		//-----------------------------------------
-		// Display a function from the skin file
-		//-----------------------------------------
-		// $test = '50%';
-		// $this->output .= $this->registry->output->getTemplate('syncApp')->appIndexTemplate(	$test );
+        //-----------------------------------------
+        // Display a function from the skin file
+        //-----------------------------------------
+        // $test = '50%';
+        // $this->output .= $this->registry->output->getTemplate('syncApp')->appIndexTemplate(  $test );
 
-		//-----------------------------------------
-		// Output
-		//-----------------------------------------
+        //-----------------------------------------
+        // Output
+        //-----------------------------------------
 
-		$this->registry->output->addContent( $test );
+        //$this->registry->output->addContent( $test );
 
-		$this->registry->output->addContent( $this->output );
-		$this->registry->output->sendOutput();
-	}
+        $this->registry->output->addContent( $this->output );
+        $this->registry->output->sendOutput();
+    }
 }

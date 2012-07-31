@@ -19,53 +19,48 @@
 class dashboardNotifications__syncApp
 {
 
-	public function __construct()
-	{
-	        $this->registry = ipsRegistry::instance();
-	        $this->settings = ipsRegistry::fetchSettings();
-	}
+    public function __construct()
+    {
+            $this->registry = ipsRegistry::instance();
+            $this->settings = ipsRegistry::fetchSettings();
+    }
 
-	public function get()
-	{
+    public function get()
+    {
         $warnings = array();
 
-		if ($this->settings['syncapp_enabled_soap'] == 1)
-		{
-			if( !$this->settings['syncapp_soap_user'] || !$this->settings['syncapp_soap_password'])
-			{
-				$warnings[] = array( "SyncApp Soap connection info missing!", "Go to System Settings → SyncApp → General" );
-			}
-		}
-
-		if (!$this->settings['syncapp_mysql_user'])
-		{
-			$warnings[] = array( "SyncApp SQL connection info missing!", "Go to System Settings → SyncApp → General" );
-		}
-		else
-		{
-			$classname = "db_driver_Mysql";
-
-				$sync_DB = new $classname;
-
-				$sync_DB->obj['sql_database']  = $this->settings['syncapp_realm_database'];
-				$sync_DB->obj['sql_user']	   = $this->settings['syncapp_mysql_user'];
-				$sync_DB->obj['sql_pass']	   = $this->settings['syncapp_mysql_password'];
-				$sync_DB->obj['sql_host']	   = $this->settings['syncapp_mysql_ip'];
-
-				$sync_DB->return_die = true;
-
-				if ( ! $sync_DB->connect() )
-				{
-					$warnings[] = array( "SyncApp Cannot connect to external DB", $sync_DB->error );
-				}
-		}
-
-        if( !$this->settings['something_to_check'] )
+        if ($this->settings['syncapp_enabled_soap'] == 1)
         {
-        	$warnings[] = array( "SyncApp not configured", "You have disabled something important and should go turn it back on" );
+            if( !$this->settings['syncapp_soap_user'] || !$this->settings['syncapp_soap_password'])
+            {
+                $warnings[] = array( "SyncApp Soap connection info missing!", "Go to System Settings → SyncApp → General" );
+            }
+        }
+
+        if (!$this->settings['syncapp_mysql_user'])
+        {
+            $warnings[] = array( "SyncApp SQL connection info missing!", "Go to System Settings → SyncApp → General" );
+        }
+        else
+        {
+            $classname = "db_driver_Mysql";
+
+                $sync_DB = new $classname;
+
+                $sync_DB->obj['sql_database']  = $this->settings['syncapp_realm_database'];
+                $sync_DB->obj['sql_user']      = $this->settings['syncapp_mysql_user'];
+                $sync_DB->obj['sql_pass']      = $this->settings['syncapp_mysql_password'];
+                $sync_DB->obj['sql_host']      = $this->settings['syncapp_mysql_ip'];
+
+                $sync_DB->return_die = true;
+
+                if ( ! $sync_DB->connect() )
+                {
+                    $warnings[] = array( "SyncApp Cannot connect to external DB", $sync_DB->error );
+                }
         }
 
         return $warnings;
-	}
+    }
 
 }

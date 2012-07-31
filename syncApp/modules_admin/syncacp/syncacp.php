@@ -21,34 +21,34 @@
  */
 class admin_syncApp_syncacp_syncacp extends ipsCommand
 {
-	/**
-	 * doExecute is the method that is ran when the section is accessed
-	 */
-	public function doExecute( ipsRegistry $registry )
-	{
-		//-----------------------------------------
-		// Load the ACP skin file (in the skin_cp directory)
-		//-----------------------------------------
+    /**
+     * doExecute is the method that is ran when the section is accessed
+     */
+    public function doExecute( ipsRegistry $registry )
+    {
+        //-----------------------------------------
+        // Load the ACP skin file (in the skin_cp directory)
+        //-----------------------------------------
 
-		$this->html = $this->registry->output->loadTemplate( 'cp_skin_syncApp' );
+        $this->html = $this->registry->output->loadTemplate( 'cp_skin_syncApp' );
 
-		//-----------------------------------------
-		// Load the language file (in the cache/lang_cache directory)
-		//-----------------------------------------
+        //-----------------------------------------
+        // Load the language file (in the cache/lang_cache directory)
+        //-----------------------------------------
 
-		$this->lang->loadLanguageFile( array( 'admin_lang' ) ); // Will automatically prepend "(app)_"
+        $this->lang->loadLanguageFile( array( 'admin_lang' ) ); // Will automatically prepend "(app)_"
 
-		//-----------------------------------------
-		// Display a function from the skin file
-		//-----------------------------------------
+        //-----------------------------------------
+        // Display a function from the skin file
+        //-----------------------------------------
 
-		$this->registry->output->html .= $this->html->syncApp();
+        $this->registry->output->html .= $this->html->syncApp();
 
-		//-----------------------------------------
-		// Output
-		//-----------------------------------------
-		//$this->registry->output->addContent('');
-		$this->registry->output->html_main .= $this->registry->output->global_template->global_frame_wrapper();
-		$this->registry->output->sendOutput();
-	}
+        //-----------------------------------------
+        // Output
+        //-----------------------------------------
+        //$this->registry->output->addContent('');
+        $this->registry->output->html_main .= $this->registry->output->global_template->global_frame_wrapper();
+        $this->registry->output->sendOutput();
+    }
 }

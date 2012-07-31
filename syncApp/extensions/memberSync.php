@@ -64,6 +64,7 @@ class syncAppMemberSync
                     {
                         $fail = 1;
                         return $fail;
+                        /* At this point we dont have a connection so ABORT! else database driver error */
                     }
 
                 if ($this->settings['syncapp_mysql_user'] || $this->settings['syncapp_mysql_password'] || $fail != 1 )
@@ -96,35 +97,41 @@ class syncAppMemberSync
          */
         public function get_ip_address()
         {
-                foreach(array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_X_CLUSTER_CLIENT_IP','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR') as $key)
-				{
-                	if (array_key_exists($key, $_SERVER) === true)
-					{
-                    	foreach (explode(',', $_SERVER[$key]) as $ip)
-						{
-                    		if (filter_var($ip, FILTER_VALIDATE_IP) !== false)
-							{
-                                  return $ip;
-							}
-						}
-					}
-				}
+            foreach(array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_X_CLUSTER_CLIENT_IP','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR') as $key)
+            {
+                if (array_key_exists($key, $_SERVER) === true)
+                {
+                    foreach (explode(',', $_SERVER[$key]) as $ip)
+                    {
+                        if (filter_var($ip, FILTER_VALIDATE_IP) !== false)
+                        {
+                            return $ip;
+                        }
+                    }
+                }
+            }
         }
 
         public function ExecuteSoapCommand($command)
         {
-                try { $cliente = new SoapClient(NULL, array(
-                "location" => $this->settings['syncapp_soap_ip'], //"http://127.0.0.1:7878/",
-                "uri"   => "urn:TC",
-                "style" => SOAP_RPC,
-                "login" => $this->settings['syncapp_soap_user'],
-                "password" => $this->settings['syncapp_soap_password']));
+            try
+            {
+                $cliente = new SoapClient(NULL, array(
+                    "location" => $this->settings['syncapp_soap_ip'], //"http://127.0.0.1:7878/",
+                    "uri"   => "urn:TC",
+                    "style" => SOAP_RPC,
+                    "login" => $this->settings['syncapp_soap_user'],
+                    "password" => $this->settings['syncapp_soap_password']));
 
-                $result = $cliente->executeCommand(new SoapParam($command, "command"));
+            $result = $cliente->executeCommand(new SoapParam($command, "command"));
 
-                }catch(Exception $e)
-                { return array('sent' => false, 'message' => $e->getMessage()); }
-                return array('sent' => true, 'message' => $result);
+            }
+            catch(Exception $e)
+            {
+                return array('sent' => false, 'message' => $e->getMessage());
+            }
+
+            return array('sent' => true, 'message' => $result);
         }
 
         /**
@@ -182,7 +189,7 @@ class syncAppMemberSync
                 {
                     $password = $this->request['PassWord'];
                     }
-                     else  // User or admin creating the account
+                     else  // User or admin creating the account?
                     {
                         $password = $this->request['password'];
                 }
@@ -191,7 +198,7 @@ class syncAppMemberSync
                 {
                     $locked = intval(1);
                     }
-                    else // Force user to vaildate email before allowing server access
+                    else // Force user to vaildate email before allowing server access?
                     {
                         $locked = intval(0);
                 }
@@ -238,8 +245,6 @@ class syncAppMemberSync
          */
         public function onLogin( $member )
         {
-        //  print $this->settings['soap'];
-        // exit ();
         }
 
         /**
@@ -297,6 +302,7 @@ class syncAppMemberSync
             }
         }
             // Credit to: Marcher
+            /* Big thanks */
 
         /**
          * This method is called after a member's account has been merged into another member's account
@@ -459,8 +465,8 @@ class syncAppMemberSync
         public function onNameChange( $id, $new_name )
         {
         /*      $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .$id));
-                $password = strtoupper($_POST['displayPassword']);
-                $username = strtoupper($new_name);
+                $password = ['displayPassword'];
+                $username = $new_name;
                 $hash = strtoupper(SHA1("".$username.":".$password.""));
 
                 ipsRegistry::DB('appSyncWoWqqDB')->update('account', array( 'username' => $username, 'sha_pass_hash' => $hash, 'sessionkey' => '', 'v' => '', 's' => '' ), "id=".$row['account_id']);
@@ -475,9 +481,6 @@ class syncAppMemberSync
          */
         public function onCompleteAccount( $member )
         {
-                   // Grab configuration file
-                //require_once( IPS_ROOT_PATH . 'conf_WoW.php' ); //require_once($_SERVER['DOCUMENT_ROOT'].'/conf_WoW.php');
-
                 if ($this->settings['syncapp_email_vaildate'] == 1)
                 {
                     ipsRegistry::DB('appSyncWoWqqDB')->update('account', array('locked' =>  '0'), "id=".$member['member_id']);

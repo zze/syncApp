@@ -21,7 +21,7 @@
   <languagegroup>
     <lang>
       <word_app>syncApp</word_app>
-      <word_pack>public_lang</word_pack>
+      <word_pack>public_lang_syncApp</word_pack>
       <word_key>page_title</word_key>
       <word_default>Sync</word_default>
       <word_custom/>

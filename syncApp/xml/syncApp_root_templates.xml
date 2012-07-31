@@ -58,7 +58,7 @@
 					<input type='password' size='30' id='syncapp_password' class='input_text' name='syncapp_password' value='' />
 				</div>
 			</fieldset>]]></template_content>
-      <template_name>test</template_name>
+      <template_name>usercpForm</template_name>
       <template_data/>
       <template_updated>1342433697</template_updated>
       <template_removable>0</template_removable>

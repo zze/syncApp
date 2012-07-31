@@ -21,56 +21,56 @@
  */
 class cp_skin_syncApp extends output
 {
-	public $path_to_ipb = '';
+    public $path_to_ipb = '';
 
-	/**
-	 * We must declare a destructor
-	 */
-	public function __destruct()
-	{
-	}
+    /**
+     * We must declare a destructor
+     */
+    public function __destruct()
+    {
+    }
 
-	/**
-	 * Functions are used to display output
-	 */
-	public function syncApp()
-	{
-		$IPBHTML = "";
-		//--starthtml--//
-
-
-		$IPBHTML .= <<<HTML
+    /**
+     * Functions are used to display output
+     */
+    public function syncApp()
+    {
+        $IPBHTML = "";
+        //--starthtml--//
 
 
-		<div class='acp-box'> <h3>Table With Control Strips</h3> <table class='ipsTable'>
+        $IPBHTML .= <<<HTML
 
-		<tr>
-		<th>Title</th> <th>Stats</th> <th>Stats</th> <th class='col_buttons'>&nbsp;</th>
-		</tr>
 
-		<tr class='ipsControlRow'>
-		<td>
-			<span class='larger_text'>Foo</td> <td>Bar</td> <td>Bar</td>
-		<td>
-			<ul class='ipsControlStrip'> <li class='i_add'><a href='#'>Add</a></li></ul>
-		</td>
-		</tr>
+        <div class='acp-box'> <h3>Table With Control Strips</h3> <table class='ipsTable'>
 
-		<tr class='ipsControlRow'>
-		<td>
-			<span class='larger_text'>Foo</td> <td>Bar</td> <td>Bar</td>
-		<td>
-			<ul class='ipsControlStrip'> <li class='i_edit'><a href='#'>Edit</a></ul>
-		</td>
-		</tr>
-		</table>
+        <tr>
+        <th>Title</th> <th>Stats</th> <th>Stats</th> <th class='col_buttons'>&nbsp;</th>
+        </tr>
+
+        <tr class='ipsControlRow'>
+        <td>
+            <span class='larger_text'>Foo</td> <td>Bar</td> <td>Bar</td>
+        <td>
+            <ul class='ipsControlStrip'> <li class='i_add'><a href='#'>Add</a></li></ul>
+        </td>
+        </tr>
+
+        <tr class='ipsControlRow'>
+        <td>
+            <span class='larger_text'>Foo</td> <td>Bar</td> <td>Bar</td>
+        <td>
+            <ul class='ipsControlStrip'> <li class='i_edit'><a href='#'>Edit</a></ul>
+        </td>
+        </tr>
+        </table>
 
 
 HTML;
 
-		//--endhtml--//
-		return $IPBHTML;
+        //--endhtml--//
+        return $IPBHTML;
 
-	}
+    }
 
 }

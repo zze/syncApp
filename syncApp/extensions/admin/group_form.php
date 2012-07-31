@@ -18,34 +18,33 @@
 
 class admin_group_form__syncApp implements admin_group_form
 {
-	/**
-	* Tab name
-	*/
-	public $tab_name = "";
+    /**
+    * Tab name
+    */
+    public $tab_name = "";
 
-	/**
-	* Returns content for the page
-	*/
-	public function getDisplayContent( $group=array(), $tabsUsed = 4 )
-	{
-		#Load html template
-		$this->html = ipsRegistry::getClass('output')->loadTemplate('cp_skin_syncApp_group_form', 'syncApp' );
+    /**
+    * Returns content for the page
+    */
+    public function getDisplayContent( $group=array(), $tabsUsed = 4 )
+    {
+        #Load html template
+        $this->html = ipsRegistry::getClass('output')->loadTemplate('cp_skin_syncApp_group_form', 'syncApp' );
 
 
-		#return display stuff
-		return array( 'tabs' => $this->html->acp_group_form_tabs( $group, ( $tabsUsed + 1 ) ), 'content' => $this->html->acp_group_form_main( $group, ( $tabsUsed + 1 ) ), 'tabsUsed' => 1 );
-	}
+        #return display stuff
+        return array( 'tabs' => $this->html->acp_group_form_tabs( $group, ( $tabsUsed + 1 ) ), 'content' => $this->html->acp_group_form_main( $group, ( $tabsUsed + 1 ) ), 'tabsUsed' => 1 );
+    }
 
-	/**
-	* Process the entries for saving and return
-	*/
-	public function getForSave()
-	{
-		return array(
-		// 'syncapp_group_id' => intval(ipsRegistry::$request['syncapp_group_id']),
-		'syncapp_realm_id' => intval(ipsRegistry::$request['syncapp_realm_id']),
-		'syncapp_server_prem' => intval(ipsRegistry::$request['syncapp_server_prem'])
+    /**
+    * Process the entries for saving and return
+    */
+    public function getForSave()
+    {
+        return array(
+        'syncapp_realm_id' => intval(ipsRegistry::$request['syncapp_realm_id']),
+        'syncapp_server_prem' => intval(ipsRegistry::$request['syncapp_server_prem'])
 
-		);
-	}
+        );
+    }
 }
