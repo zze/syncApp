@@ -21,7 +21,7 @@
 	<data>
 		<name>SyncApp</name>
 		<public_name>SyncApp</public_name>
-		<author>github.com | Zze - jz3731@gmail.com</author>
+		<author>Zze - jz3731@gmail.com</author>
 		<description>Syncs account information between the forum a wow emulated server.</description>
 		<templategroups>
 			<template match="exact">skin_syncApp</template>

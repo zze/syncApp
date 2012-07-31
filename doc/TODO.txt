@@ -1,0 +1,4 @@
+TODO: 
+* Add lang stings
+* Finish ACP
+* Add more to this list :|

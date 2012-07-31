@@ -17,21 +17,20 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<?xml version="1.0" encoding="utf-8"?>
 <settingexport>
   <settinggroup>
     <setting>
       <conf_is_title>1</conf_is_title>
       <conf_title_keyword>syncapp</conf_title_keyword>
       <conf_title_title>General</conf_title_title>
-      <conf_title_desc/>
+      <conf_title_desc>MySQL, SOAP and other settings </conf_title_desc>
       <conf_title_tab>SyncApp</conf_title_tab>
       <conf_title_app>syncApp</conf_title_app>
       <conf_title_noshow>0</conf_title_noshow>
     </setting>
     <setting>
       <conf_title>MySQL IP</conf_title>
-      <conf_description/>
+      <conf_description>The MySQL server IP for Game (WoW) database.</conf_description>
       <conf_group>44</conf_group>
       <conf_type>input</conf_type>
       <conf_key>syncapp_mysql_ip</conf_key>
@@ -48,7 +47,7 @@
     </setting>
     <setting>
       <conf_title>MySQL User</conf_title>
-      <conf_description/>
+      <conf_description>The MySQL User for the Game database. perhaps 'trinity'?</conf_description>
       <conf_group>44</conf_group>
       <conf_type>input</conf_type>
       <conf_key>syncapp_mysql_user</conf_key>
@@ -65,7 +64,7 @@
     </setting>
     <setting>
       <conf_title>MySQL Password</conf_title>
-      <conf_description/>
+      <conf_description>The MySQL password for the Game database. perhaps 'trinity'?</conf_description>
       <conf_group>44</conf_group>
       <conf_type>input</conf_type>
       <conf_key>syncapp_mysql_password</conf_key>
@@ -80,26 +79,9 @@
       <conf_title_keyword>syncapp</conf_title_keyword>
       <conf_is_title>0</conf_is_title>
     </setting>
-    <setting>
-      <conf_title>Character database</conf_title>
-      <conf_description/>
-      <conf_group>44</conf_group>
-      <conf_type>input</conf_type>
-      <conf_key>syncapp_character_database</conf_key>
-      <conf_default>characters</conf_default>
-      <conf_extra/>
-      <conf_evalphp/>
-      <conf_protected>0</conf_protected>
-      <conf_position>5</conf_position>
-      <conf_start_group/>
-      <conf_add_cache>1</conf_add_cache>
-      <conf_keywords/>
-      <conf_title_keyword>syncapp</conf_title_keyword>
-      <conf_is_title>0</conf_is_title>
-    </setting>
-    <setting>
+  <setting>
       <conf_title>Realm Database</conf_title>
-      <conf_description/>
+      <conf_description>Database name for WoW accounts tables. Set for TrinityCore Default</conf_description>
       <conf_group>44</conf_group>
       <conf_type>input</conf_type>
       <conf_key>syncapp_realm_database</conf_key>
@@ -115,8 +97,25 @@
       <conf_is_title>0</conf_is_title>
     </setting>
     <setting>
+      <conf_title>Character database</conf_title>
+      <conf_description>Database name for WoW characters tables. Set for TrinityCore Default</conf_description>
+      <conf_group>44</conf_group>
+      <conf_type>input</conf_type>
+      <conf_key>syncapp_character_database</conf_key>
+      <conf_default>characters</conf_default>
+      <conf_extra/>
+      <conf_evalphp/>
+      <conf_protected>0</conf_protected>
+      <conf_position>6</conf_position>
+      <conf_start_group/>
+      <conf_add_cache>1</conf_add_cache>
+      <conf_keywords/>
+      <conf_title_keyword>syncapp</conf_title_keyword>
+      <conf_is_title>0</conf_is_title>
+    </setting>
+    <setting>
       <conf_title>Enabled</conf_title>
-      <conf_description/>
+      <conf_description>This should be enabled!!!</conf_description>
       <conf_group>44</conf_group>
       <conf_type>yes_no</conf_type>
       <conf_key>syncapp_enabled_soap</conf_key>
@@ -124,7 +123,7 @@
       <conf_extra/>
       <conf_evalphp/>
       <conf_protected>0</conf_protected>
-      <conf_position>6</conf_position>
+      <conf_position>7</conf_position>
       <conf_start_group>Soap</conf_start_group>
       <conf_add_cache>1</conf_add_cache>
       <conf_keywords/>
@@ -133,15 +132,15 @@
     </setting>
     <setting>
       <conf_title>IP</conf_title>
-      <conf_description/>
+      <conf_description>SOAP IP (this runs through TrinityCore, readme.txt!)</conf_description>
       <conf_group>44</conf_group>
       <conf_type>input</conf_type>
       <conf_key>syncapp_soap_ip</conf_key>
-      <conf_default>localhost</conf_default>
+      <conf_default>http://127.0.0.1:7878/</conf_default>
       <conf_extra/>
       <conf_evalphp/>
       <conf_protected>0</conf_protected>
-      <conf_position>7</conf_position>
+      <conf_position>8</conf_position>
       <conf_start_group/>
       <conf_add_cache>1</conf_add_cache>
       <conf_keywords/>
@@ -158,7 +157,7 @@
       <conf_extra/>
       <conf_evalphp/>
       <conf_protected>1</conf_protected>
-      <conf_position>8</conf_position>
+      <conf_position>9</conf_position>
       <conf_start_group/>
       <conf_add_cache>1</conf_add_cache>
       <conf_keywords/>
@@ -175,7 +174,7 @@
       <conf_extra/>
       <conf_evalphp/>
       <conf_protected>1</conf_protected>
-      <conf_position>9</conf_position>
+      <conf_position>10</conf_position>
       <conf_start_group/>
       <conf_add_cache>1</conf_add_cache>
       <conf_keywords/>
@@ -192,7 +191,7 @@
       <conf_extra/>
       <conf_evalphp/>
       <conf_protected>0</conf_protected>
-      <conf_position>10</conf_position>
+      <conf_position>11</conf_position>
       <conf_start_group>Email</conf_start_group>
       <conf_add_cache>1</conf_add_cache>
       <conf_keywords/>

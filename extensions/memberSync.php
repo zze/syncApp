@@ -63,7 +63,7 @@ class syncAppMemberSync
                     if ( ! $sync_DB->connect() )
                     {
                         $fail = 1;
-                        //return $fail;
+                        return $fail;
                     }
 
                 if ($this->settings['syncapp_mysql_user'] || $this->settings['syncapp_mysql_password'] || $fail != 1 )
@@ -96,11 +96,19 @@ class syncAppMemberSync
          */
         public function get_ip_address()
         {
-                foreach(array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_X_CLUSTER_CLIENT_IP','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR') as $key) {
-                      if (array_key_exists($key, $_SERVER) === true) {
-                           foreach (explode(',', $_SERVER[$key]) as $ip) {
-                              if (filter_var($ip, FILTER_VALIDATE_IP) !== false) {
-                                  return $ip; }}}}
+                foreach(array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_X_CLUSTER_CLIENT_IP','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR') as $key)
+				{
+                	if (array_key_exists($key, $_SERVER) === true)
+					{
+                    	foreach (explode(',', $_SERVER[$key]) as $ip)
+						{
+                    		if (filter_var($ip, FILTER_VALIDATE_IP) !== false)
+							{
+                                  return $ip;
+							}
+						}
+					}
+				}
         }
 
         public function ExecuteSoapCommand($command)
