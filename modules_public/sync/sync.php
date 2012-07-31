@@ -48,12 +48,8 @@ class public_syncApp_sync_sync extends ipsCommand
 		//-----------------------------------------
 		// Display a function from the skin file
 		//-----------------------------------------
-		$test = '50%';
-		$this->output .= $this->registry->output->getTemplate('syncApp')->appIndexTemplate(	$test );
-		//$this->output .= "";
-	//	$this->output .= 'sup2';
-
-
+		// $test = '50%';
+		// $this->output .= $this->registry->output->getTemplate('syncApp')->appIndexTemplate(	$test );
 
 		//-----------------------------------------
 		// Output

@@ -21,7 +21,7 @@
   <templategroup group="skin_syncApp">
     <template>
       <template_group>skin_syncApp</template_group>
-      <template_content>hello</template_content>
+      <template_content></template_content>
       <template_name>appIndexTemplate</template_name>
       <template_data>$test</template_data>
       <template_updated>1342433697</template_updated>
