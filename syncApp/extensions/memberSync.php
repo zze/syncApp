@@ -265,7 +265,8 @@ class syncAppMemberSync
          */
         public function onDelete( $mids )
         {
-            if ($this->settings['syncapp_enabled_soap'] == 1){
+            if ($this->settings['syncapp_enabled_soap'] == 1)
+            {
 
                     $members = array();
                     ipsRegistry::DB()->build(array('select' => '*', 'from' => 'syncapp_members', 'where' => "forum_id ".$mids));
@@ -299,6 +300,10 @@ class syncAppMemberSync
                         }
                     }
                 }
+            }
+            else
+            {
+                return;
             }
         }
             // Credit to: Marcher
@@ -483,7 +488,7 @@ class syncAppMemberSync
         {
                 if ($this->settings['syncapp_email_vaildate'] == 1)
                 {
-					$row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$member['member_id']));
+                    $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$member['member_id']));
                     ipsRegistry::DB('appSyncWoWqqDB')->update('account', array('locked' =>  '0'), "id=".$row['account_id']);
                 }
         }

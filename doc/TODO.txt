@@ -2,3 +2,4 @@ TODO:
 * Add language strings
 * Finish ACP
 * Make use(s) of the public module
+* Add a function to test if SOAP is authenticating through TC and accepting commands.
