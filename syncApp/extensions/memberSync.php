@@ -267,7 +267,6 @@ class syncAppMemberSync
         {
             if ($this->settings['syncapp_enabled_soap'] == 1)
             {
-
                     $members = array();
                     ipsRegistry::DB()->build(array('select' => '*', 'from' => 'syncapp_members', 'where' => "forum_id ".$mids));
 
@@ -297,6 +296,8 @@ class syncAppMemberSync
                             //do stuff with $m
                             $cmdLineToSend = 'account delete '.$m;
                             $soap_command = $this->ExecuteSoapCommand($cmdLineToSend);
+
+                            ipsRegistry::DB()->delete('syncapp_members',  "forum_id ".$mids);
                         }
                     }
                 }
