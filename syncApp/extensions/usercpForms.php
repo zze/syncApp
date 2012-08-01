@@ -155,8 +155,8 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
             $row = ipsRegistry::DB('appSyncWoWqqDB')->buildAndFetch(array('select' => '*', 'from' => 'account', 'where' => "username='{$user}'"));
             if ($row)
             {
-                $username = $this->request['syncapp_user'];
-                $password = $this->request['syncapp_password'];
+                $username = strtoupper($this->request['syncapp_user']);
+                $password = strtoupper($this->request['syncapp_password']);
                 $sha_NameAndPass = strtoupper(SHA1("".$username.":".$password.""));
 
                 if($row['sha_pass_hash'] === $sha_NameAndPass)

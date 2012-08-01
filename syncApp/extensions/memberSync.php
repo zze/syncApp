@@ -187,11 +187,11 @@ class syncAppMemberSync
                 /* Set Variables */
             if (isset($this->request['PassWord']))
                 {
-                    $password = $this->request['PassWord'];
+                    $password = strtoupper($this->request['PassWord']);
                     }
                      else  // User or admin creating the account?
                     {
-                        $password = $this->request['password'];
+                        $password = strtoupper($this->request['password']);
                 }
 
             if ($this->settings['syncapp_email_vaildate'] == 1)
@@ -203,7 +203,7 @@ class syncAppMemberSync
                         $locked = intval(0);
                 }
 
-            $username = $member['name'];
+            $username = strtoupper($member['name']);
             $sha_NameAndPass = strtoupper(SHA1("".$username.":".$password.""));
             $ip = $this->get_ip_address();
                 /* End variables */
@@ -362,8 +362,8 @@ class syncAppMemberSync
                 }
                 else
                 {
-                    $username = $row[0];
-                    $password = $new_plain_text_pass;
+                    $username = strtoupper($row[0]);
+                    $password = strtoupper($new_plain_text_pass);
                     $hash = strtoupper(SHA1("".$username.":".$password.""));
                     $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$id));
 
@@ -483,7 +483,8 @@ class syncAppMemberSync
         {
                 if ($this->settings['syncapp_email_vaildate'] == 1)
                 {
-                    ipsRegistry::DB('appSyncWoWqqDB')->update('account', array('locked' =>  '0'), "id=".$member['member_id']);
+					$row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$member['member_id']));
+                    ipsRegistry::DB('appSyncWoWqqDB')->update('account', array('locked' =>  '0'), "id=".$row['account_id']);
                 }
         }
 }
