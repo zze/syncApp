@@ -31,12 +31,10 @@ public function __destruct()
  */
 public function acp_group_form_main( $group, $tabId ) {
 
-    $form                           = array();
-    //$form['g_ID']         = $this->registry->output->formInput( "syncapp_group_id", '4' );
-    $form['realm_id']       = $this->registry->output->formInput( "syncapp_realm_id", '-1' );
-    $form_server_prem       = ipsRegistry::getClass('output')->formDropdown( "syncapp_server_prem", array( array( '3', 'Administrator' ), array( '2', 'Moderator' ), array( '1', 'Member'), array( '0', 'Banned' )  ) );
-    //ipsRegistry::getClass('output')->formMultiDropdown( "tets", array( array( 'admin', 'Administrator' ), array( 'mod', 'Moderator' ), array( 'banned', 'Banned' )  ), 8, 'mgroup_others' ); //
-
+    $form = array();
+    $val = $this->caches['group_cache'][ $group['g_id']]['syncapp_server_prem'];
+    $form['realm_id']  = $this->registry->output->formInput( "syncapp_realm_id", '-1' );
+    $form_server_prem  = ipsRegistry::getClass('output')->formDropdown( "syncapp_server_prem", array( array( '3', 'Administrator' ), array( '2', 'Moderator' ), array( '1', 'Member'), array( '0', 'Banned' ) ), $val );
 
 $IPBHTML = "";
 
