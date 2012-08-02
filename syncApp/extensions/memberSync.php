@@ -350,25 +350,29 @@ class syncAppMemberSync
                 $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .$id));
                 $acctid = $row['account_id'];
                 $row = ipsRegistry::DB('appSyncWoWqqDB')->buildAndFetch(array('select' => 'username', 'from' => 'account', 'where' => 'id=' .$acctid));
+                $username = strtoupper($row['username']);
 
                 if ($this->settings['syncapp_enabled_soap'] == 1)
                 {
+                    if (strtoupper($this->settings['syncapp_soap_user']) == $username)
+                    {
+                        $this->registry->output->redirectScreen("Failed: You can't change the password of the SOAP user!");
+                        return;
+                    }
+
                     $cmdLineToSend = 'account set password '.$row['username'].' '.$new_plain_text_pass.' '.$new_plain_text_pass;
                     $soap_command = $this->ExecuteSoapCommand($cmdLineToSend);
-                            // print_r($row); exit();
 
-                            //  Debug
-                            /*
-                            if($soap_command['sent']){
-                                     print  "<b>-SUCCESS-</b> " . $soap_command['message']; exit();
-                            }
-                            else{ print "<b>-ERROR-</b>" . $soap_command['message'];  exit(); }
-                            */
-
+					if(!$soap_command['sent'])
+					{
+						$password = strtoupper($new_plain_text_pass);
+						$hash = strtoupper(SHA1("".$username.":".$password.""));
+						$row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$id));
+						ipsRegistry::DB('appSyncWoWqqDB')->update('account', array('sha_pass_hash' => $hash, 'sessionkey' => '', 'v' => '', 's' => '' ), "id=".$row['account_id']);
+					}
                 }
                 else
                 {
-                    $username = strtoupper($row[0]);
                     $password = strtoupper($new_plain_text_pass);
                     $hash = strtoupper(SHA1("".$username.":".$password.""));
                     $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$id));

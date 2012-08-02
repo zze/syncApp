@@ -25,6 +25,28 @@ class dashboardNotifications__syncApp
             $this->settings = ipsRegistry::fetchSettings();
     }
 
+    public function ExecuteSoapCommand($command)
+    {
+        try
+        {
+            $cliente = new SoapClient(NULL, array(
+                "location" => $this->settings['syncapp_soap_ip'], //"http://127.0.0.1:7878/",
+                "uri"   => "urn:TC",
+                "style" => SOAP_RPC,
+                "login" => $this->settings['syncapp_soap_user'],
+                "password" => $this->settings['syncapp_soap_password']));
+
+        $result = $cliente->executeCommand(new SoapParam($command, "command"));
+
+        }
+        catch(Exception $e)
+        {
+            return array('sent' => false, 'message' => $e->getMessage());
+        }
+
+        return array('sent' => true, 'message' => $result);
+    }
+
     public function get()
     {
         $warnings = array();
@@ -58,6 +80,14 @@ class dashboardNotifications__syncApp
                 {
                     $warnings[] = array( "SyncApp Cannot connect to external DB", $sync_DB->error );
                 }
+        }
+
+        $cmdLineToSend = 'server info';
+        $soap_command = $this->ExecuteSoapCommand($cmdLineToSend);
+
+        if(!$soap_command['sent'])
+        {
+             $warnings[] = array( "SOAP unable to send commands.", 'System Settings > SyncApp > General' );
         }
 
         return $warnings;
