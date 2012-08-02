@@ -127,7 +127,7 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
         }
         else
         {
-            return $this->output .= $this->registry->output->getTemplate('syncApp')->usercpFrom();
+            return $this->output .= $this->registry->output->getTemplate('syncApp')->usercpForm();
         }
     }
 
