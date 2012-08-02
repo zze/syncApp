@@ -231,7 +231,7 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
                 {
                     /* Set up Variables */
                     $username = $this->request['syncapp_user'];
-                    $password = $this->request['syncapp_password'];
+                    $password = strtoupper($this->request['syncapp_password']);
                     $sha_NameAndPass = strtoupper(SHA1("".$username.":".$password.""));
                     /* End variables */
 
