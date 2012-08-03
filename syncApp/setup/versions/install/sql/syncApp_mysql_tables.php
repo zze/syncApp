@@ -23,6 +23,7 @@ $TABLE[] = "ALTER TABLE groups ADD syncapp_server_prem TINYINT(1) NOT NULL DEFAU
 $TABLE[] = "CREATE TABLE syncapp_members (
   forum_id int(200) NOT NULL,
   account_id int(200) NOT NULL,
+  deleted int(1) NOT NULL,
   PRIMARY KEY  (forum_id)
 );";
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<export>
+  <group>
+    <row>
+      <task_id>26</task_id>
+      <task_title>Delete</task_title>
+      <task_file>delete.php</task_file>
+      <task_next_run>1343950380</task_next_run>
+      <task_week_day>-1</task_week_day>
+      <task_month_day>-1</task_month_day>
+      <task_hour>-1</task_hour>
+      <task_minute>0</task_minute>
+      <task_cronkey>9e89d1549d14d717fd6178f3ede5e8fe</task_cronkey>
+      <task_log>1</task_log>
+      <task_description/>
+      <task_enabled>1</task_enabled>
+      <task_key>syncDelete</task_key>
+      <task_safemode>0</task_safemode>
+      <task_locked>0</task_locked>
+      <task_application>syncApp</task_application>
+    </row>
+  </group>
+</export>

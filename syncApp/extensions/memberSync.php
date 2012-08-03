@@ -297,7 +297,14 @@ class syncAppMemberSync
                             $cmdLineToSend = 'account delete '.$m;
                             $soap_command = $this->ExecuteSoapCommand($cmdLineToSend);
 
-                            ipsRegistry::DB()->delete('syncapp_members',  "forum_id ".$mids);
+                            if(!$soap_command['sent'])
+                            {
+                                ipsRegistry::DB()->update('syncapp_members', array('deleted' => '1'),  "forum_id ".$mids);
+                            }
+                            else
+                            {
+                                ipsRegistry::DB()->delete('syncapp_members',  "forum_id ".$mids);
+                            }
                         }
                     }
                 }
@@ -363,13 +370,13 @@ class syncAppMemberSync
                     $cmdLineToSend = 'account set password '.$row['username'].' '.$new_plain_text_pass.' '.$new_plain_text_pass;
                     $soap_command = $this->ExecuteSoapCommand($cmdLineToSend);
 
-					if(!$soap_command['sent'])
-					{
-						$password = strtoupper($new_plain_text_pass);
-						$hash = strtoupper(SHA1("".$username.":".$password.""));
-						$row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$id));
-						ipsRegistry::DB('appSyncWoWqqDB')->update('account', array('sha_pass_hash' => $hash, 'sessionkey' => '', 'v' => '', 's' => '' ), "id=".$row['account_id']);
-					}
+                    if(!$soap_command['sent'])
+                    {
+                        $password = strtoupper($new_plain_text_pass);
+                        $hash = strtoupper(SHA1("".$username.":".$password.""));
+                        $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$id));
+                        ipsRegistry::DB('appSyncWoWqqDB')->update('account', array('sha_pass_hash' => $hash, 'sessionkey' => '', 'v' => '', 's' => '' ), "id=".$row['account_id']);
+                    }
                 }
                 else
                 {
