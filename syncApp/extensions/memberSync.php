@@ -36,6 +36,7 @@ class syncAppMemberSync
          */
 
 
+
         public function __construct()
         {
                 $this->registry   =  ipsRegistry::instance();
@@ -48,6 +49,7 @@ class syncAppMemberSync
                 $this->cache      =  $this->registry->cache();
                 $this->caches     =& $this->registry->cache()->fetchCaches();
 
+                $sqlPassed = FALSE;
 
                 $classname = "db_driver_Mysql";
 
@@ -83,6 +85,8 @@ class syncAppMemberSync
                               'sql_host'                      => $this->settings['syncapp_mysql_ip'],
                             )
                         );
+
+                        $this->sqlPassed = TRUE;
                 }
                 else
                 {
@@ -162,68 +166,70 @@ class syncAppMemberSync
          */
         public function onCreateAccount( $member )
         {
-            $user = strtoupper(ipsRegistry::DB('appSyncWoWqqDB')->addSlashes(strtoupper($member['members_display_name'])));
-            $row = ipsRegistry::DB('appSyncWoWqqDB')->buildAndFetch(array('select' => '*', 'from' => 'account', 'where' => "username='{$user}'"));
-
-            if($row)
+            if ($this->sqlPassed == TRUE)
             {
-                $this->registry->output->redirectScreen("Failed: Account username exists in server DB");
-                return;
-            }
-            else
-            {
+                $user = strtoupper(ipsRegistry::DB('appSyncWoWqqDB')->addSlashes(strtoupper($member['members_display_name'])));
+                $row = ipsRegistry::DB('appSyncWoWqqDB')->buildAndFetch(array('select' => '*', 'from' => 'account', 'where' => "username='{$user}'"));
 
-            $exists = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' . intval($this->memberData['member_id'])));
-            $acctid = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'account_id='  .intval($row['id'])));
-
-            if ($exists || $acctid)
-            {
-                $this->registry->output->redirectScreen("Failed: Account ID exists in sync DB");
-                return;
-            }
-            else
-            {
-
-                /* Set Variables */
-            if (isset($this->request['PassWord']))
+                if($row)
                 {
-                    $password = strtoupper($this->request['PassWord']);
-                    }
-                     else  // User or admin creating the account?
-                    {
-                        $password = strtoupper($this->request['password']);
+                    $this->registry->output->redirectScreen("Failed: Account username exists in server DB");
+                    return;
                 }
-
-            if ($this->settings['syncapp_email_vaildate'] == 1)
+                else
                 {
-                    $locked = intval(1);
-                    }
-                    else // Force user to vaildate email before allowing server access?
-                    {
-                        $locked = intval(0);
+
+                $exists = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' . intval($this->memberData['member_id'])));
+                $acctid = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'account_id='  .intval($row['id'])));
+
+                if ($exists || $acctid)
+                {
+                    $this->registry->output->redirectScreen("Failed: Account ID exists in sync DB");
+                    return;
                 }
+                else
+                {
+                        /* Set Variables */
+                    if (isset($this->request['PassWord']))
+                    {
+                        $password = strtoupper($this->request['PassWord']);
+                        }
+                         else  // User or admin creating the account?
+                        {
+                            $password = strtoupper($this->request['password']);
+                    }
 
-            $username = strtoupper($member['name']);
-            $sha_NameAndPass = strtoupper(SHA1("".$username.":".$password.""));
-            $ip = $this->get_ip_address();
-                /* End variables */
+                    if ($this->settings['syncapp_email_vaildate'] == 1)
+                    {
+                        $locked = intval(1);
+                        }
+                        else // Force user to vaildate email before allowing server access?
+                        {
+                            $locked = intval(0);
+                    }
 
-            /* create WoW account */
-            ipsRegistry::DB('appSyncWoWqqDB')->insert('account', array(
-            'username'      =>  $username,
-            'sha_pass_hash' =>  $sha_NameAndPass,
-            'email'         =>  $this->memberData['email'],
-            'last_ip'       =>  $ip,
-            'locked'        =>  $locked,
-            'expansion'     =>  intval(2)));
+                    $username = strtoupper($member['name']);
+                    $sha_NameAndPass = strtoupper(SHA1("".$username.":".$password.""));
+                    $ip = $this->get_ip_address();
+                        /* End variables */
 
-            $account_ID =   ipsRegistry::DB('appSyncWoWqqDB')->getInsertId();
+                    /* create WoW account */
+                    ipsRegistry::DB('appSyncWoWqqDB')->insert('account', array(
+                    'username'      =>  $username,
+                    'sha_pass_hash' =>  $sha_NameAndPass,
+                    'email'         =>  $this->memberData['email'],
+                    'last_ip'       =>  $ip,
+                    'locked'        =>  $locked,
+                    'expansion'     =>  intval(2)));
 
-            /* Create id sync table */
-            ipsRegistry::DB()->insert('syncapp_members', array(
-            'forum_id'      =>  $member['member_id'],
-            'account_id'        =>  $account_ID));
+                    $account_ID =   ipsRegistry::DB('appSyncWoWqqDB')->getInsertId();
 
+                    /* Create id sync table */
+                    ipsRegistry::DB()->insert('syncapp_members', array(
+                    'forum_id'      =>  $member['member_id'],
+                    'account_id'        =>  $account_ID));
+
+                    }
                 }
             }
         }
@@ -267,15 +273,15 @@ class syncAppMemberSync
         {
             if ($this->settings['syncapp_enabled_soap'] == 1)
             {
-                    $members = array();
-                    ipsRegistry::DB()->build(array('select' => '*', 'from' => 'syncapp_members', 'where' => "forum_id ".$mids));
+                $members = array();
+                ipsRegistry::DB()->build(array('select' => '*', 'from' => 'syncapp_members', 'where' => "forum_id ".$mids));
 
-                    $memdb =  ipsRegistry::DB()->execute();
-                    while( $mems = ipsRegistry::DB()->fetch($memdb))
-                        {
-                            $members[] = $mems['account_id'];
-                        }
-                    ipsRegistry::DB('appSyncWoWqqDB')->freeResult($memdb);
+                $memdb =  ipsRegistry::DB()->execute();
+                while( $mems = ipsRegistry::DB()->fetch($memdb))
+                    {
+                        $members[] = $mems['account_id'];
+                    }
+                ipsRegistry::DB('appSyncWoWqqDB')->freeResult($memdb);
 
                     if(count($members)>0)
                     {
@@ -285,29 +291,29 @@ class syncAppMemberSync
 
                     while( $accts = ipsRegistry::DB('appSyncWoWqqDB')->fetch($acctdb))
                         {
-                            $account[] = $accts['username'];
+                            $account[$accts['id']] = $accts['username'];
                         }
                     ipsRegistry::DB('appSyncWoWqqDB')->freeResult($acctdb);
 
-                    if(count($account)>0)
-                    {
-                        foreach($account as $m)
+                        if(count($account)>0)
                         {
-                            //do stuff with $m
-                            $cmdLineToSend = 'account delete '.$m;
-                            $soap_command = $this->ExecuteSoapCommand($cmdLineToSend);
+                            foreach($account as $m)
+                            {
+                                //do stuff with $m
+                                $cmdLineToSend = 'account delete '.$m;
+                                $soap_command = $this->ExecuteSoapCommand($cmdLineToSend);
 
-                            if(!$soap_command['sent'])
-                            {
-                                ipsRegistry::DB()->update('syncapp_members', array('deleted' => '1'),  "forum_id ".$mids);
-                            }
-                            else
-                            {
-                                ipsRegistry::DB()->delete('syncapp_members',  "forum_id ".$mids);
+                                if(!$soap_command['sent'])
+                                {
+                                    ipsRegistry::DB()->update('syncapp_members', array('deleted' => '1'),  "forum_id='{$id}'");
+                                }
+                                else
+                                {
+                                    ipsRegistry::DB()->delete('syncapp_members',  "forum_id='{$id}'");
+                                }
                             }
                         }
                     }
-                }
             }
             else
             {
@@ -354,6 +360,8 @@ class syncAppMemberSync
          */
         public function onPassChange( $id, $new_plain_text_pass )
         {
+            if ($this->sqlPassed == TRUE)
+            {
                 $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .$id));
                 $acctid = $row['account_id'];
                 $row = ipsRegistry::DB('appSyncWoWqqDB')->buildAndFetch(array('select' => 'username', 'from' => 'account', 'where' => 'id=' .$acctid));
@@ -390,6 +398,7 @@ class syncAppMemberSync
                         // $this->registry->output->addContent( $username.' - '.$password.' - '.$hash);
                         // $this->registry->output->sendOutput();
                 }
+            }
         }
 
         /**
@@ -414,6 +423,8 @@ class syncAppMemberSync
          */
         public function onGroupChange( $id, $new_group, $old_group )
         {
+            if ($this->sqlPassed == TRUE)
+            {
                 $group = $this->caches['group_cache'];
                 $myGroup = array();
                 $mID = intval($new_group);
@@ -421,11 +432,11 @@ class syncAppMemberSync
 
                     foreach($group as $gid => $g)
                     {
-                     if($mID===$gid)
-                      {
-                        $myGroup = $g;
-                        break;
-                      }
+                        if($mID===$gid)
+                        {
+                            $myGroup = $g;
+                            break;
+                        }
                     }
 
                     $account_id = $row['account_id'];
@@ -470,7 +481,9 @@ class syncAppMemberSync
                         ipsRegistry::DB('appSyncWoWqqDB')->update('account_access', array('gmlevel' => $myGroup['syncapp_server_prem']), "id=".$account_id);
                         }
                     }
-        }
+                }
+            }
+
 
         /**
          * This method is run after a users display name is successfully changed
@@ -498,10 +511,13 @@ class syncAppMemberSync
          */
         public function onCompleteAccount( $member )
         {
+            if ($this->sqlPassed == TRUE)
+            {
                 if ($this->settings['syncapp_email_vaildate'] == 1)
                 {
                     $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$member['member_id']));
                     ipsRegistry::DB('appSyncWoWqqDB')->update('account', array('locked' =>  '0'), "id=".$row['account_id']);
                 }
+            }
         }
 }
