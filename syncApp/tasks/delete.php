@@ -127,14 +127,14 @@ class task_item
 
                     while( $accts = ipsRegistry::DB('appSyncWoWqqDB')->fetch($acctdb))
                         {
-                            $account[] = $accts['username'];
+                            $account[$accts['id']] = $accts['username'];
                         }
                     }
                     ipsRegistry::DB('appSyncWoWqqDB')->freeResult($acctdb);
 
                     if(count($account)>0)
                     {
-                        foreach($account as $m)
+                        foreach($account as $id => $m)
                         {
                             //do stuff with $m
                             $cmdLineToSend = 'account delete '.$m;
@@ -146,14 +146,11 @@ class task_item
                             }
                             else
                             {
-                                ipsRegistry::DB()->delete('syncapp_members',  "deleted=1");
+                                ipsRegistry::DB()->delete('syncapp_members',  "forum_id='{$id}'");
                                 $pass = 'Old accounts deleted!';
                             }
                         }
                     }
-
-
-
 
                 //-----------------------------------------
                 // Save task log

@@ -295,7 +295,7 @@ class syncAppMemberSync
 
                         if(count($account)>0)
                         {
-                            foreach($account as $m)
+                            foreach($account as $id => $m)
                             {
                                 //do stuff with $m
                                 $cmdLineToSend = 'account delete '.$m;
