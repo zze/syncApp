@@ -36,9 +36,9 @@ public function acp_group_form_main( $group, $tabId )
     $form['realm_id']  = $this->registry->output->formInput( "syncapp_realm_id", '-1' );
     $form_server_prem  = ipsRegistry::getClass('output')->formDropdown( "syncapp_server_prem", array( array( '3', 'Administrator' ), array( '2', 'Moderator' ), array( '1', 'Member'), array( '0', 'Banned' ) ), $val );
 
-	$IPBHTML = "";
+    $IPBHTML = "";
 
-	$IPBHTML .= <<<EOF
+    $IPBHTML .= <<<EOF
 
     <div id='tab_GROUPS_{$tabId}_content'>
             <table class='ipsTable double_pad'>
@@ -77,9 +77,9 @@ return $IPBHTML;
  */
 public function acp_group_form_tabs( $group, $tabId )
 {
-	$IPBHTML = "";
+    $IPBHTML = "";
 
-	$IPBHTML .= <<<EOF
+    $IPBHTML .= <<<EOF
     <li id='tab_GROUPS_{$tabId}' class=''>syncApp</li>
 EOF;
 
