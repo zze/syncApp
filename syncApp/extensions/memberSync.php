@@ -37,59 +37,59 @@ class syncAppMemberSync
 
         public function __construct()
         {
-                $this->registry   =  ipsRegistry::instance();
-                $this->DB         =  $this->registry->DB();
-                $this->settings   =& $this->registry->fetchSettings();
-                $this->request    =& $this->registry->fetchRequest();
-                $this->lang       =  $this->registry->getClass('class_localization');
-                $this->member     =  $this->registry->member();
-                $this->memberData =& $this->registry->member()->fetchMemberData();
-                $this->cache      =  $this->registry->cache();
-                $this->caches     =& $this->registry->cache()->fetchCaches();
+            $this->registry   =  ipsRegistry::instance();
+            $this->DB         =  $this->registry->DB();
+            $this->settings   =& $this->registry->fetchSettings();
+            $this->request    =& $this->registry->fetchRequest();
+            $this->lang       =  $this->registry->getClass('class_localization');
+            $this->member     =  $this->registry->member();
+            $this->memberData =& $this->registry->member()->fetchMemberData();
+            $this->cache      =  $this->registry->cache();
+            $this->caches     =& $this->registry->cache()->fetchCaches();
 
-                $sqlPassed = FALSE;
+            $sqlPassed = FALSE;
 
-                $classname = "db_driver_Mysql";
+            $classname = "db_driver_Mysql";
 
-                    $sync_DB = new $classname;
+                $sync_DB = new $classname;
 
-                    $sync_DB->obj['sql_database']  = $this->settings['syncapp_realm_database'];
-                    $sync_DB->obj['sql_user']      = $this->settings['syncapp_mysql_user'];
-                    $sync_DB->obj['sql_pass']      = $this->settings['syncapp_mysql_password'];
-                    $sync_DB->obj['sql_host']      = $this->settings['syncapp_mysql_ip'];
+                $sync_DB->obj['sql_database']  = $this->settings['syncapp_realm_database'];
+                $sync_DB->obj['sql_user']      = $this->settings['syncapp_mysql_user'];
+                $sync_DB->obj['sql_pass']      = $this->settings['syncapp_mysql_password'];
+                $sync_DB->obj['sql_host']      = $this->settings['syncapp_mysql_ip'];
 
-                    $sync_DB->return_die = true;
+                $sync_DB->return_die = true;
 
-                    if ( ! $sync_DB->connect() )
-                    {
-                        $fail = 1;
-                        return $fail;
-                        /* At this point we dont have a connection so ABORT! else database driver error */
-                    }
-
-                if ($this->settings['syncapp_mysql_user'] || $this->settings['syncapp_mysql_password'] || $fail != 1 )
+                if ( ! $sync_DB->connect() )
                 {
-                    $this->registry->dbFunctions()->setDB( 'mysql', 'appSyncWoWqqDB', array(
-                              'sql_database'                  => $this->settings['syncapp_realm_database'],
-                              'sql_user'                      => $this->settings['syncapp_mysql_user'],
-                              'sql_pass'                      => $this->settings['syncapp_mysql_password'],
-                              'sql_host'                      => $this->settings['syncapp_mysql_ip'],
-                            )
-                        );
-                    $this->registry->dbFunctions()->setDB( 'mysql', 'appSyncWoWcharacterDB', array(
-                              'sql_database'                  => $this->settings['syncapp_character_database'],
-                              'sql_user'                      => $this->settings['syncapp_mysql_user'],
-                              'sql_pass'                      => $this->settings['syncapp_mysql_password'],
-                              'sql_host'                      => $this->settings['syncapp_mysql_ip'],
-                            )
-                        );
+                    $fail = 1;
+                    return $fail;
+                    /* At this point we dont have a connection so ABORT! else database driver error */
+                }
 
-                        $this->sqlPassed = TRUE;
-                }
-                else
-                {
-                    return;
-                }
+            if ($this->settings['syncapp_mysql_user'] || $this->settings['syncapp_mysql_password'] || $fail != 1 )
+            {
+                $this->registry->dbFunctions()->setDB( 'mysql', 'appSyncWoWqqDB', array(
+                          'sql_database'                  => $this->settings['syncapp_realm_database'],
+                          'sql_user'                      => $this->settings['syncapp_mysql_user'],
+                          'sql_pass'                      => $this->settings['syncapp_mysql_password'],
+                          'sql_host'                      => $this->settings['syncapp_mysql_ip'],
+                        )
+                    );
+                $this->registry->dbFunctions()->setDB( 'mysql', 'appSyncWoWcharacterDB', array(
+                          'sql_database'                  => $this->settings['syncapp_character_database'],
+                          'sql_user'                      => $this->settings['syncapp_mysql_user'],
+                          'sql_pass'                      => $this->settings['syncapp_mysql_password'],
+                          'sql_host'                      => $this->settings['syncapp_mysql_ip'],
+                        )
+                    );
+
+                    $this->sqlPassed = TRUE;
+            }
+            else
+            {
+                return;
+            }
         }
 
         /**
