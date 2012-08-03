@@ -35,8 +35,6 @@ class syncAppMemberSync
          * @return      @e void
          */
 
-
-
         public function __construct()
         {
                 $this->registry   =  ipsRegistry::instance();
