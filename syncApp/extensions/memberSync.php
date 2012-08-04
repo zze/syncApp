@@ -284,7 +284,7 @@ class syncAppMemberSync
                     if(count($members)>0)
                     {
                         $account = array();
-                        ipsRegistry::DB('appSyncWoWqqDB')->build(array('select' => 'username', 'from' => 'account', 'where' => "id IN('".implode("','", $members)."')"));
+                        ipsRegistry::DB('appSyncWoWqqDB')->build(array('select' => '*', 'from' => 'account', 'where' => "id IN('".implode("','", $members)."')"));
                         $acctdb =  ipsRegistry::DB('appSyncWoWqqDB')->execute();
 
                     while( $accts = ipsRegistry::DB('appSyncWoWqqDB')->fetch($acctdb))
@@ -303,11 +303,11 @@ class syncAppMemberSync
 
                                 if(!$soap_command['sent'])
                                 {
-                                    ipsRegistry::DB()->update('syncapp_members', array('deleted' => '1'),  "forum_id='{$id}'");
+                                    ipsRegistry::DB()->update('syncapp_members', array('deleted' => '1'),  "account_id='{$id}'");
                                 }
                                 else
                                 {
-                                    ipsRegistry::DB()->delete('syncapp_members',  "forum_id='{$id}'");
+                                    ipsRegistry::DB()->delete('syncapp_members',  "account_id='{$id}'");
                                 }
                             }
                         }

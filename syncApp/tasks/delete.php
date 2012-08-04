@@ -59,22 +59,22 @@ class task_item
          */
         public function __construct( ipsRegistry $registry, $class, $task )
         {
-                /* Make registry objects */
-                $this->registry = $registry;
-                $this->DB               = $registry->DB();
-                $this->settings = ipsRegistry::fetchSettings();
-                $this->lang             = $this->registry->getClass('class_localization');
+            /* Make registry objects */
+            $this->registry = $registry;
+            $this->DB               = $registry->DB();
+            $this->settings = ipsRegistry::fetchSettings();
+            $this->lang             = $this->registry->getClass('class_localization');
 
-                $this->class    = $class;
-                $this->task             = $task;
+            $this->class    = $class;
+            $this->task             = $task;
 
-                $this->registry->dbFunctions()->setDB( 'mysql', 'appSyncWoWqqDB', array(
-                          'sql_database'                  => $this->settings['syncapp_realm_database'],
-                          'sql_user'                      => $this->settings['syncapp_mysql_user'],
-                          'sql_pass'                      => $this->settings['syncapp_mysql_password'],
-                          'sql_host'                      => $this->settings['syncapp_mysql_ip'],
-                        )
-                    );
+            $this->registry->dbFunctions()->setDB( 'mysql', 'appSyncWoWqqDB', array(
+                      'sql_database'                  => $this->settings['syncapp_realm_database'],
+                      'sql_user'                      => $this->settings['syncapp_mysql_user'],
+                      'sql_pass'                      => $this->settings['syncapp_mysql_password'],
+                      'sql_host'                      => $this->settings['syncapp_mysql_ip'],
+                    )
+                );
         }
         public function ExecuteSoapCommand($command)
         {
@@ -122,7 +122,7 @@ class task_item
                  if(count($members)>0)
                     {
                         $account = array();
-                        ipsRegistry::DB('appSyncWoWqqDB')->build(array('select' => 'username', 'from' => 'account', 'where' => "id IN('".implode("','", $members)."')"));
+                        ipsRegistry::DB('appSyncWoWqqDB')->build(array('select' => '*', 'from' => 'account', 'where' => "id IN('".implode("','", $members)."')"));
                         $acctdb =  ipsRegistry::DB('appSyncWoWqqDB')->execute();
 
                     while( $accts = ipsRegistry::DB('appSyncWoWqqDB')->fetch($acctdb))
@@ -146,7 +146,7 @@ class task_item
                             }
                             else
                             {
-                                ipsRegistry::DB()->delete('syncapp_members',  "forum_id='{$id}'");
+                                ipsRegistry::DB()->delete('syncapp_members',  "account_id='{$id}'");
                                 $pass = 'Old accounts deleted!';
                             }
                         }
