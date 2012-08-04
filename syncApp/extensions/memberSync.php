@@ -284,7 +284,7 @@ class syncAppMemberSync
                     if(count($members)>0)
                     {
                         $account = array();
-                        ipsRegistry::DB('appSyncWoWqqDB')->build(array('select' => '*', 'from' => 'account', 'where' => "id IN('".implode("','", $members)."')"));
+                        ipsRegistry::DB('appSyncWoWqqDB')->build(array('select' => 'username, id', 'from' => 'account', 'where' => "id IN('".implode("','", $members)."')"));
                         $acctdb =  ipsRegistry::DB('appSyncWoWqqDB')->execute();
 
                     while( $accts = ipsRegistry::DB('appSyncWoWqqDB')->fetch($acctdb))
