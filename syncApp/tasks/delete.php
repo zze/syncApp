@@ -142,12 +142,12 @@ class task_item
 
                             if(!$soap_command['sent'])
                             {
-                                $pass = 'Delete failed';
+                                $pass = "Failed to delete:"."<b>(</b> ".implode(", ", $account)." <b>)</b>";
                             }
                             else
                             {
                                 ipsRegistry::DB()->delete('syncapp_members',  "account_id='{$id}'");
-                                $pass = 'Old accounts deleted!';
+                                $pass = "Accounts deleted:"."<b>(</b> ".implode(", ", $account)." <b>)</b>";
                             }
                         }
                     }
