@@ -21,30 +21,9 @@ class dashboardNotifications__syncApp
 
     public function __construct()
     {
-            $this->registry = ipsRegistry::instance();
-            $this->settings = ipsRegistry::fetchSettings();
-    }
-
-    public function ExecuteSoapCommand($command)
-    {
-        try
-        {
-            $cliente = new SoapClient(NULL, array(
-                "location" => $this->settings['syncapp_soap_ip'], //"http://127.0.0.1:7878/",
-                "uri"   => "urn:TC",
-                "style" => SOAP_RPC,
-                "login" => $this->settings['syncapp_soap_user'],
-                "password" => $this->settings['syncapp_soap_password']));
-
-        $result = $cliente->executeCommand(new SoapParam($command, "command"));
-
-        }
-        catch(Exception $e)
-        {
-            return array('sent' => false, 'message' => $e->getMessage());
-        }
-
-        return array('sent' => true, 'message' => $result);
+        $this->registry = ipsRegistry::instance();
+        $this->settings = ipsRegistry::fetchSettings();
+        $this->registry->class_localization->loadLanguageFile( array( 'public_lang_syncApp', 'syncApp' ) );
     }
 
     public function get()
@@ -62,32 +41,6 @@ class dashboardNotifications__syncApp
         if (!$this->settings['syncapp_mysql_user'])
         {
             $warnings[] = array( "SyncApp SQL connection info missing!", "Go to System Settings → SyncApp → General" );
-        }
-        else
-        {
-            $classname = "db_driver_Mysql";
-
-                $sync_DB = new $classname;
-
-                $sync_DB->obj['sql_database']  = $this->settings['syncapp_realm_database'];
-                $sync_DB->obj['sql_user']      = $this->settings['syncapp_mysql_user'];
-                $sync_DB->obj['sql_pass']      = $this->settings['syncapp_mysql_password'];
-                $sync_DB->obj['sql_host']      = $this->settings['syncapp_mysql_ip'];
-
-                $sync_DB->return_die = true;
-
-                if ( ! $sync_DB->connect() )
-                {
-                    $warnings[] = array( "SyncApp Cannot connect to external DB", $sync_DB->error );
-                }
-        }
-
-        $cmdLineToSend = 'server info';
-        $soap_command = $this->ExecuteSoapCommand($cmdLineToSend);
-
-        if(!$soap_command['sent'])
-        {
-             $warnings[] = array( "SOAP unable to send commands.", 'System Settings > SyncApp > General' );
         }
 
         return $warnings;
