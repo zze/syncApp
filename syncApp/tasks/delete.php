@@ -68,7 +68,7 @@ class task_item
             $this->class    = $class;
             $this->task             = $task;
 
-            $this->registry->dbFunctions()->setDB( 'mysql', 'appSyncWoWqqDB', array(
+            $this->registry->dbFunctions()->setDB( 'mysql', 'world_DB', array(
                       'sql_database'                  => $this->settings['syncapp_realm_database'],
                       'sql_user'                      => $this->settings['syncapp_mysql_user'],
                       'sql_pass'                      => $this->settings['syncapp_mysql_password'],
@@ -109,8 +109,6 @@ class task_item
                 // Here is where you perform your task
                 //-----------------------------------------
 
-            // TODO:
-            //* Add deleted users to log
                 $members = array();
                 ipsRegistry::DB()->build(array('select' => '*', 'from' => 'syncapp_members', 'where' => "deleted='1'"));
                 $memdb =  ipsRegistry::DB()->execute();
@@ -118,19 +116,19 @@ class task_item
                     {
                         $members[] = $mems['account_id'];
                     }
-                    ipsRegistry::DB('appSyncWoWqqDB')->freeResult($memdb);
+                    ipsRegistry::DB('world_DB')->freeResult($memdb);
                  if(count($members)>0)
                     {
                         $account = array();
-                        ipsRegistry::DB('appSyncWoWqqDB')->build(array('select' => 'username, id', 'from' => 'account', 'where' => "id IN('".implode("','", $members)."')"));
-                        $acctdb =  ipsRegistry::DB('appSyncWoWqqDB')->execute();
+                        ipsRegistry::DB('world_DB')->build(array('select' => 'username, id', 'from' => 'account', 'where' => "id IN('".implode("','", $members)."')"));
+                        $acctdb =  ipsRegistry::DB('world_DB')->execute();
 
-                    while( $accts = ipsRegistry::DB('appSyncWoWqqDB')->fetch($acctdb))
+                    while( $accts = ipsRegistry::DB('world_DB')->fetch($acctdb))
                         {
                             $account[$accts['id']] = $accts['username'];
                         }
                     }
-                    ipsRegistry::DB('appSyncWoWqqDB')->freeResult($acctdb);
+                    ipsRegistry::DB('world_DB')->freeResult($acctdb);
 
                     if(count($account)>0)
                     {

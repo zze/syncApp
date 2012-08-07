@@ -31,7 +31,6 @@ class admin_group_form__syncApp implements admin_group_form
         #Load html template
         $this->html = ipsRegistry::getClass('output')->loadTemplate('cp_skin_syncApp_group_form', 'syncApp' );
 
-
         #return display stuff
         return array( 'tabs' => $this->html->acp_group_form_tabs( $group, ( $tabsUsed + 1 ) ), 'content' => $this->html->acp_group_form_main( $group, ( $tabsUsed + 1 ) ), 'tabsUsed' => 1 );
     }
@@ -44,7 +43,6 @@ class admin_group_form__syncApp implements admin_group_form
         return array(
         'syncapp_realm_id' => intval(ipsRegistry::$request['syncapp_realm_id']),
         'syncapp_server_prem' => intval(ipsRegistry::$request['syncapp_server_prem'])
-
         );
     }
 }

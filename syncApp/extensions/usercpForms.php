@@ -117,12 +117,10 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
 
     public function showForm( $current_area, $errors=array() )
     {
-      //  ipsRegistry::getClass('class_localization')->loadLanguageFile( array( 'public_lang' ), 'syncapp' );
-
         $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .intval( $this->memberData['member_id'] )));
         if($row['forum_id'])
         {
-            $this->registry->output->silentRedirect($this->settings['base_url']);
+            $this->registry->output->silentRedirect($this->settings['base_url'].'app=core&module=usercp&tab=core');
             return;
         }
         else
@@ -140,7 +138,7 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
      */
     public function saveForm( $current_area )
     {
-        $this->registry->dbFunctions()->setDB( 'mysql', 'appSyncWoWqqDB', array(
+        $this->registry->dbFunctions()->setDB( 'mysql', 'world_DB', array(
                   'sql_database'                  => $this->settings['syncapp_realm_database'],
                   'sql_user'                      => $this->settings['syncapp_mysql_user'],
                   'sql_pass'                      => $this->settings['syncapp_mysql_password'],
@@ -151,8 +149,9 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
             // has account
         if ($this->request['exist'] == 1)
         {
-            $user = strtoupper(ipsRegistry::DB('appSyncWoWqqDB')->addSlashes($this->request['syncapp_user']));
-            $row = ipsRegistry::DB('appSyncWoWqqDB')->buildAndFetch(array('select' => '*', 'from' => 'account', 'where' => "username='{$user}'"));
+            $user = strtoupper(ipsRegistry::DB('world_DB')->addSlashes($this->request['syncapp_user']));
+            $row = ipsRegistry::DB('world_DB')->buildAndFetch(array('select' => '*', 'from' => 'account', 'where' => "username='{$user}'"));
+
             if ($row)
             {
                 $username = strtoupper($this->request['syncapp_user']);
@@ -195,8 +194,8 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
             // dose not have account
         if ($this->request['exist'] == 2)
         {
-            $user = ipsRegistry::DB('appSyncWoWqqDB')->addSlashes($this->request['syncapp_user']);
-            $row = ipsRegistry::DB('appSyncWoWqqDB')->buildAndFetch(array('select' => '*', 'from' => 'account', 'where' => "username='{$user}'"));
+            $user = ipsRegistry::DB('world_DB')->addSlashes($this->request['syncapp_user']);
+            $row = ipsRegistry::DB('world_DB')->buildAndFetch(array('select' => '*', 'from' => 'account', 'where' => "username='{$user}'"));
 
             //TODO -
             // CHECK FOR LOOPING
@@ -236,14 +235,14 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
                     /* End variables */
 
                     /* create WoW account */
-                    ipsRegistry::DB('appSyncWoWqqDB')->insert('account', array(
+                    ipsRegistry::DB('world_DB')->insert('account', array(
                     'username'      =>  $username,
                     'sha_pass_hash' =>  $sha_NameAndPass,
                     'email'         =>  $this->memberData['email'],
                     'expansion'     =>  intval(2)));
 
                     /* Grab id from the above query */
-                    $account_ID =   ipsRegistry::DB('appSyncWoWqqDB')->getInsertId();
+                    $account_ID =   ipsRegistry::DB('world_DB')->getInsertId();
 
                     /* Create id sync table */
                     ipsRegistry::DB()->insert('syncapp_members', array(
