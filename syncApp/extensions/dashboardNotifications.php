@@ -35,13 +35,18 @@ class dashboardNotifications__syncApp
         {
             if( !$this->settings['syncapp_soap_user'] || !$this->settings['syncapp_soap_password'])
             {
-                $warnings[] = array( "SyncApp Soap connection info missing!", "Go to System Settings → SyncApp → General" );
+                $warnings[] = array( "SyncApp | Soap connection info missing!", "Go to System Settings → SyncApp → General" );
             }
         }
 
+        else
+		{
+            $warnings[] = array( "SyncApp | Soap is disabled", "Go to System Settings → SyncApp → General" );
+		}
+
         if (!$this->settings['syncapp_mysql_user'])
         {
-            $warnings[] = array( "SyncApp SQL connection info missing!", "Go to System Settings → SyncApp → General" );
+            $warnings[] = array( "SyncApp | SQL connection info missing!", "Go to System Settings → SyncApp → General" );
         }
 
         return $warnings;
