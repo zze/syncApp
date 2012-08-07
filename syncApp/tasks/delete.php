@@ -109,6 +109,7 @@ class task_item
                 // Here is where you perform your task
                 //-----------------------------------------
 
+                ipsRegistry::instance()->getClass('class_localization')->loadLanguageFile( array( 'public_lang' ), 'syncApp' );
                 $members = array();
                 ipsRegistry::DB()->build(array('select' => '*', 'from' => 'syncapp_members', 'where' => "deleted='1'"));
                 $memdb =  ipsRegistry::DB()->execute();

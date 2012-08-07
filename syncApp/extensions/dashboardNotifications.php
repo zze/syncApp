@@ -23,7 +23,8 @@ class dashboardNotifications__syncApp
     {
         $this->registry = ipsRegistry::instance();
         $this->settings = ipsRegistry::fetchSettings();
-        $this->registry->class_localization->loadLanguageFile( array( 'public_lang_syncApp', 'syncApp' ) );
+        $this->lang     = $this->registry->getClass('class_localization');
+        $this->registry->class_localization->loadLanguageFile( array('public_lang', 'syncApp'));
     }
 
     public function get()

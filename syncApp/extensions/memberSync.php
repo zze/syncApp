@@ -42,6 +42,7 @@ class syncAppMemberSync
             $this->settings   =& $this->registry->fetchSettings();
             $this->request    =& $this->registry->fetchRequest();
             $this->lang       =  $this->registry->getClass('class_localization');
+            $this->registry->class_localization->loadLanguageFile( array('public_lang','syncApp'));
             $this->member     =  $this->registry->member();
             $this->memberData =& $this->registry->member()->fetchMemberData();
             $this->cache      =  $this->registry->cache();

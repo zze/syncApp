@@ -138,6 +138,7 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
      */
     public function saveForm( $current_area )
     {
+        ipsRegistry::instance()->getClass('class_localization')->loadLanguageFile( array( 'public_lang' ), 'syncApp' );
         $this->registry->dbFunctions()->setDB( 'mysql', 'world_DB', array(
                   'sql_database'                  => $this->settings['syncapp_realm_database'],
                   'sql_user'                      => $this->settings['syncapp_mysql_user'],
