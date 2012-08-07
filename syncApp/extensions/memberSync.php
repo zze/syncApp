@@ -42,7 +42,7 @@ class syncAppMemberSync
             $this->settings   =& $this->registry->fetchSettings();
             $this->request    =& $this->registry->fetchRequest();
             $this->lang       =  $this->registry->getClass('class_localization');
-            $this->registry->class_localization->loadLanguageFile( array('public_lang','syncApp'));
+            ipsRegistry::getClass('class_localization')->loadLanguageFile( array( 'public_lang' ), 'syncApp' );
             $this->member     =  $this->registry->member();
             $this->memberData =& $this->registry->member()->fetchMemberData();
             $this->cache      =  $this->registry->cache();
@@ -165,7 +165,7 @@ class syncAppMemberSync
 
                 if($row)
                 {
-                    $this->registry->output->redirectScreen("Failed: Account username exists in server DB");
+                    $this->registry->output->redirectScreen($this->lang->words['failed_account_exists_in_auth']);
                     return;
                 }
                 else
@@ -176,7 +176,7 @@ class syncAppMemberSync
 
                 if ($exists || $acctid)
                 {
-                    $this->registry->output->redirectScreen("Failed: Account ID exists in sync DB");
+                    $this->registry->output->redirectScreen($this->lang->words['failed_account_exists_in_sync']);
                     return;
                 }
                 else
@@ -363,7 +363,7 @@ class syncAppMemberSync
                 {
                     if (strtoupper($this->settings['syncapp_soap_user']) == $username)
                     {
-                        $this->registry->output->redirectScreen("Failed: You can't change the password of the SOAP user!");
+                        $this->registry->output->redirectScreen($this->lang->words['failed_password_of_soap']);
                         return;
                     }
 

@@ -21,46 +21,30 @@
   <templategroup group="skin_syncApp">
     <template>
       <template_group>skin_syncApp</template_group>
-      <template_content></template_content>
-      <template_name>appIndexTemplate</template_name>
-      <template_data>$test</template_data>
-      <template_updated>1342433697</template_updated>
-      <template_removable>0</template_removable>
-      <template_user_added>0</template_user_added>
-      <template_user_edited>0</template_user_edited>
-      <template_master_key>root</template_master_key>
-    </template>
-    <template>
-      <template_group>skin_syncApp</template_group>
-      <template_content><![CDATA[<h2 class="ipsType_subtitle ipsSettings_pagetitle">Account Options</h2>
-	<div class="ipsSettings">
-
-		<fieldset class="ipsSettings_section">
-			<h3 class="ipsSettings_sectiontitle">Options</h3>
-
-			<select name='exist' id='exist'>
-			<option value="1">A : Associate Game accout to forum account </option>
-			<option value="2">B : Create a new account with access</option>
-			</select>
-
-		</fieldset>
-
-			<fieldset class='ipsSettings_section'>
-				<h3 class="ipsSettings_sectiontitle">Username</h3>
-				<div>
-					<input type='text' name='syncapp_user' value='' id='syncapp_user' class='input_text' size='30' />
-				</div>
-			</fieldset>
-
-			<fieldset class="ipsSettings_section">
-				<h3 class="ipsSettings_sectiontitle">Password</h3>
-				<div>
-					<input type='password' size='30' id='syncapp_password' class='input_text' name='syncapp_password' value='' />
-				</div>
-			</fieldset>]]></template_content>
+      <template_content><![CDATA[<h2 class="ipsType_subtitle ipsSettings_pagetitle">{$this->lang->words['account_options']}</h2>
+    <div class="ipsSettings">
+        <fieldset class="ipsSettings_section">
+            <h3 class="ipsSettings_sectiontitle">{$this->lang->words['options']}</h3>
+            <select name='exist' id='exist'>
+            <option value="1">{$this->lang->words['associate_account']}</option>
+            <option value="2">{$this->lang->words['create_account']}</option>
+            </select>
+        </fieldset>
+            <fieldset class='ipsSettings_section'>
+                <h3 class="ipsSettings_sectiontitle">{$this->lang->words['username']}</h3>
+                <div>
+                    <input type='text' name='syncapp_user' value='{$this->memberData['name']}' id='syncapp_user' class='input_text' size='30' />
+                </div>
+            </fieldset>
+            <fieldset class="ipsSettings_section">
+                <h3 class="ipsSettings_sectiontitle">{$this->lang->words['password']}</h3>
+                <div>
+                    <input type='password' size='30' id='syncapp_password' class='input_text' name='syncapp_password' value='' />
+                </div>
+            </fieldset>]]></template_content>
       <template_name>usercpForm</template_name>
       <template_data/>
-      <template_updated>1342433697</template_updated>
+      <template_updated>1344347436</template_updated>
       <template_removable>0</template_removable>
       <template_user_added>0</template_user_added>
       <template_user_edited>0</template_user_edited>

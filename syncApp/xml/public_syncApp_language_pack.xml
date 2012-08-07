@@ -21,13 +21,129 @@
   <languagegroup>
     <lang>
       <word_app>syncApp</word_app>
-      <word_pack>public_lang_syncApp</word_pack>
+      <word_pack>public_lang</word_pack>
+      <word_key>failed_account_exists_in_sync</word_key>
+      <word_default>Failed: Account exists in sync DB</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>failed_account_exists_in_auth</word_key>
+      <word_default>Failed: Account name exists in WoW DB</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>failed_authenticating_password</word_key>
+      <word_default>Failed: Could not authenticate password.</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>failed_account_non_existent</word_key>
+      <word_default>Failed: Username dose not exist, please create an account instead.</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>accounct_synced</word_key>
+      <word_default>Congratulations: Accounct synced!</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>failed_account_already_synced</word_key>
+      <word_default>Failed: This game Account has already been synced</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>failed_password_of_soap</word_key>
+      <word_default><![CDATA[Failed: You can't change the password of the SOAP user!]]></word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>failed_account_id_exists</word_key>
+      <word_default>Failed: Account ID exists in Sync DB</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>create_account</word_key>
+      <word_default>B : Create a new account with server access</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>failed_username_exists</word_key>
+      <word_default>Failed: Account username exists in auth DB</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>associate_account</word_key>
+      <word_default>A : Associate Game accout to forum account</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>username</word_key>
+      <word_default>Username</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>password</word_key>
+      <word_default>Password</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>options</word_key>
+      <word_default>Options</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>account_options</word_key>
+      <word_default>Account Options</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>sql_connection_info_missing</word_key>
+      <word_default>SyncApp: SQL connection info missing!</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>system_settings_syncapp_general</word_key>
+      <word_default>Go to System Settings → SyncApp → General</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>soap_disabled</word_key>
+      <word_default>SycnApp: Soap disabled</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
       <word_key>page_title</word_key>
       <word_default>Sync</word_default>
-      <word_custom/>
-      <word_default_version>31007</word_default_version>
-      <word_custom_version/>
-      <word_js>0</word_js>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>soap_connection_info_missing</word_key>
+      <word_default>SyncApp: Soap connection info missing!</word_default>
+    </lang>
+    <lang>
+      <word_app>syncApp</word_app>
+      <word_pack>public_lang</word_pack>
+      <word_key>congratulations_account_synced</word_key>
+      <word_default>Congratulations: Account created and synced!</word_default>
     </lang>
   </languagegroup>
 </languageexport>

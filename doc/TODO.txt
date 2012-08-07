@@ -1,4 +1,3 @@
 TODO:
-* Finish language strings
 * Finish ACP
 * Make use(s) of the public module

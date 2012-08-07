@@ -117,6 +117,7 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
 
     public function showForm( $current_area, $errors=array() )
     {
+        ipsRegistry::instance()->getClass('class_localization')->loadLanguageFile( array( 'public_lang' ), 'syncApp' );
         $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .intval( $this->memberData['member_id'] )));
         if($row['forum_id'])
         {
@@ -166,7 +167,7 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
 
                     if($acctid || $forumid)
                     {
-                        $this->registry->output->redirectScreen("Failed: This game Account has already been synced");
+                        $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_account_already_synced']);
                         return;
                     }
                     else
@@ -176,19 +177,19 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
                         'forum_id'      =>  intval($this->memberData['member_id']),
                         'account_id'    =>  intval($row['id'])));
 
-                        $this->registry->output->redirectScreen('Congratulations: Accounct synced!',$this->settings['base_url']);
+                        $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['accounct_synced'], $this->settings['base_url']);
                         return;
                     }
                 }
                 else
                 {
-                    $this->registry->output->redirectScreen("Failed: Could not authenticate password.");
+                    $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_authenticating_password']);
                     return;
                 }
             }
             else
             {
-                $this->registry->output->redirectScreen("Failed: Username dose not exist, please create an account instead.");
+                $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_account_non_existent']);
                 return;
             }
         }
@@ -214,7 +215,7 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
 
             if ($row)
             {
-                $this->registry->output->redirectScreen("Failed: Account name exists in WoW DB");
+                $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_username_exists']);
                 return;
             }
             else
@@ -224,7 +225,7 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
 
                 if ($board_acctid || $sync_acctid)
                 {
-                    $this->registry->output->redirectScreen("Failed: Account exists in sync DB");
+                    $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_account_exists_in_sync']);
                     return;
                 }
                 else
@@ -250,7 +251,7 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
                     'forum_id'      =>  intval($this->memberData['member_id']),
                     'account_id'    =>  intval($account_ID)));
 
-                    $this->registry->output->redirectScreen( "Congratulations: Account created and synced!", $this->settings['base_url']);
+                    $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['congratulations_account_synced'], $this->settings['base_url']);
                     return;
                 }
             }

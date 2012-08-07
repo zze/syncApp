@@ -23,8 +23,8 @@ class dashboardNotifications__syncApp
     {
         $this->registry = ipsRegistry::instance();
         $this->settings = ipsRegistry::fetchSettings();
-        $this->lang     = $this->registry->getClass('class_localization');
-        $this->registry->class_localization->loadLanguageFile( array('public_lang', 'syncApp'));
+        $this->lang     =  $this->registry->getClass('class_localization');
+        ipsRegistry::getClass('class_localization')->loadLanguageFile( array( 'public_lang' ), 'syncApp' );
     }
 
     public function get()
@@ -35,18 +35,18 @@ class dashboardNotifications__syncApp
         {
             if( !$this->settings['syncapp_soap_user'] || !$this->settings['syncapp_soap_password'])
             {
-                $warnings[] = array( "SyncApp | Soap connection info missing!", "Go to System Settings → SyncApp → General" );
+                $warnings[] = array( $this->lang->words['soap_connection_info_missing'], $this->lang->words['system_settings_syncapp_general'] );
             }
         }
 
         else
-		{
-            $warnings[] = array( "SyncApp | Soap is disabled", "Go to System Settings → SyncApp → General" );
-		}
+        {
+            $warnings[] = array( $this->lang->words['soap_disabled'], $this->lang->words['system_settings_syncapp_general'] );
+        }
 
         if (!$this->settings['syncapp_mysql_user'])
         {
-            $warnings[] = array( "SyncApp | SQL connection info missing!", "Go to System Settings → SyncApp → General" );
+            $warnings[] = array( $this->lang->words['sql_connection_info_missing'], $this->lang->words['system_settings_syncapp_general'] );
         }
 
         return $warnings;
