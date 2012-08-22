@@ -20,6 +20,18 @@
 <menu>
     <tabitems>
         <item>
+            <title>Settings</title>
+            <subitems>
+                <subitem>
+                    <subitemtitle>Settings</subitemtitle>
+                    <subsection>settings</subsection>
+                    <subitemurl></subitemurl>
+                    <subitemrolekey></subitemrolekey>
+                    <subisredirect>0</subisredirect>
+                </subitem>
+            </subitems>
+        </item>
+       <item>
             <title>TODO</title>
             <subitems>
                 <subitem>
