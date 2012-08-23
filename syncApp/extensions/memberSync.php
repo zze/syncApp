@@ -160,10 +160,28 @@ class syncAppMemberSync
         {
             if ($this->sqlPassed == TRUE)
             {
-                $user = strtoupper(ipsRegistry::DB('world_DB')->addSlashes($member['name']));
+                $user = strtoupper(ipsRegistry::DB('world_DB')->addSlashes(strtoupper($member['name'])));
                 $row = ipsRegistry::DB('world_DB')->buildAndFetch(array('select' => '*', 'from' => 'account', 'where' => "username='{$user}'"));
+
                 if($row)
                 {
+                    $this->registry->output->redirectScreen($this->lang->words['failed_account_exists_in_auth']);
+                    return;
+                }
+                else
+                {
+
+                $exists = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' . intval($member['member_id'])));
+                $acctid = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'account_id='  .intval($row['id'])));
+
+                if ($exists || $acctid)
+                {
+                    $this->registry->output->redirectScreen($this->lang->words['failed_account_exists_in_sync']);
+                    return;
+                }
+                else
+                {
+                        /* Set Variables */
                     if (isset($this->request['PassWord']))
                     {
                         $password = strtoupper($this->request['PassWord']);
@@ -173,54 +191,19 @@ class syncAppMemberSync
                         $password = strtoupper($this->request['password']);
                     }
 
-                    $username = strtoupper($member['name']);
-                    $sha_NameAndPass = strtoupper(SHA1("".$username.":".$password.""));
-
-                    if($row['sha_pass_hash'] == $sha_NameAndPass)
+                    if ($this->settings['syncapp_email_vaildate'] == 1)
                     {
-                        $acctid = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'account_id='  .intval($row['id'])));
-                        $forumid = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .intval($this->memberData['member_id'])));
-
-                        if($acctid || $forumid)
-                        {
-                            //$this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_account_already_synced']);
-                            return;
-                        }
-                        else
-                        {
-                            /* Create id sync table */
-                            ipsRegistry::DB()->insert('syncapp_members', array(
-                            'forum_id'      =>  intval($member['member_id']),
-                            'account_id'    =>  intval($row['id'])));
-
-                            //$this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['accounct_synced'], $this->settings['base_url']);
-                            return;
-                        }
+                        $locked = intval(1);
                     }
-                    else
+                    else // Force user to vaildate email before allowing server access?
                     {
-                        /* Set Variables */
-                        if (isset($this->request['PassWord']))
-                        {
-                            $password = strtoupper($this->request['PassWord']);
-                        }
-                        else  // User or admin creating the account?
-                        {
-                            $password = strtoupper($this->request['password']);
-                        }
-
-                        if ($this->settings['syncapp_email_vaildate'] == 1)
-                        {
-                            $locked = intval(1);
-                        }
-                        else // Force user to vaildate email before allowing server access?
-                        {
-                            $locked = intval(0);
-                        }
+                        $locked = intval(0);
+                    }
 
                     $username = strtoupper($member['name']);
                     $sha_NameAndPass = strtoupper(SHA1("".$username.":".$password.""));
                     $ip = $this->get_ip_address();
+                        /* End variables */
 
                     /* create WoW account */
                     ipsRegistry::DB('world_DB')->insert('account', array(
@@ -237,6 +220,7 @@ class syncAppMemberSync
                     ipsRegistry::DB()->insert('syncapp_members', array(
                     'forum_id'      =>  $member['member_id'],
                     'account_id'    =>  $account_ID));
+
                     }
                 }
             }
