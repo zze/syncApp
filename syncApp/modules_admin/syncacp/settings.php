@@ -24,8 +24,8 @@ class admin_syncApp_syncacp_settings extends ipsCommand
             // Set up some shortcuts for our urls
             //-----------------------------------------
 
-            $this->form_code        = 'module=mymodule&amp;section=mysection';
-            $this->form_code_js     = 'module=mymodule&section=mysection';
+            $this->form_code        = 'module=syncacp&amp;section=settings';
+            $this->form_code_js     = 'module=syncacp&section=settings';
 
             //-------------------------------
             // Grab the settings controller, instantiate and set up shortcuts
