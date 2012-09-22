@@ -75,29 +75,45 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
         $this->tab_name = '';
     }
 
+    public function ExecuteSoapCommand($command)
+    {
+        try
+        {
+            $cliente = new SoapClient(NULL, array(
+                "location" => $this->settings['syncapp_soap_ip'], //"http://127.0.0.1:7878/",
+                "uri"   => "urn:TC",
+                "style" => SOAP_RPC,
+                "login" => $this->settings['syncapp_soap_user'],
+                "password" => $this->settings['syncapp_soap_password']));
+                $result = $cliente->executeCommand(new SoapParam($command, "command"));
+        }
+        catch(Exception $e)
+        {
+            return array('sent' => false, 'message' => $e->getMessage());
+        }
+        return array('sent' => true, 'message' => $result);
+    }
+
     public function getLinks()
     {
         $classname = "db_driver_Mysql";
-
             $sync_DB = new $classname;
-
             $sync_DB->obj['sql_database']  = $this->settings['syncapp_realm_database'];
             $sync_DB->obj['sql_user']      = $this->settings['syncapp_mysql_user'];
             $sync_DB->obj['sql_pass']      = $this->settings['syncapp_mysql_password'];
             $sync_DB->obj['sql_host']      = $this->settings['syncapp_mysql_ip'];
-
             $sync_DB->return_die = true;
 
-            if ( ! $sync_DB->connect() )
-            {
-                return;
-            }
+        if ( ! $sync_DB->connect() )
+        {
+            return;
+        }
 
         $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .intval($this->memberData['member_id'])));
 
         if( $row['forum_id'] )
         {
-            return;
+           //return;
         }
         else
         {
@@ -108,6 +124,13 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
                               'area'   => 'sync');
             return $array;
         }
+            $array[] = array( 'url'    => 'area=gamecp',
+                              'title'  => 'Game CP',
+                              'active' => $this->request['tab'] == 'myapp' && $this->request['area'] == 'gamecp' ? 1 : 0,
+                              'area'   => 'gamecp');
+
+            return $array;
+
     }
 
     public function runCustomEvent( $currentArea )
@@ -118,15 +141,144 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
     public function showForm( $current_area, $errors=array() )
     {
         ipsRegistry::instance()->getClass('class_localization')->loadLanguageFile( array( 'public_lang' ), 'syncApp' );
-        $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .intval( $this->memberData['member_id'] )));
-        if($row['forum_id'])
+
+        if ($current_area == 'sync')
         {
-            $this->registry->output->silentRedirect($this->settings['base_url'].'app=core&module=usercp&tab=core');
-            return;
+            $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .intval( $this->memberData['member_id'] )));
+
+            if($row['forum_id'])
+            {
+                $current_area = 'gamecp';
+                $this->registry->output->silentRedirect($this->settings['base_url'].'app=core&module=usercp&tab=syncApp&area=gamecp');
+                return;
+            }
+            else
+            {
+                return $this->output .= $this->registry->output->getTemplate('syncApp')->usercpForm();
+            }
         }
-        else
+
+        if ($current_area == 'gamecp')
         {
-            return $this->output .= $this->registry->output->getTemplate('syncApp')->usercpForm();
+             $this->hide_form_and_save_button = true;
+             $this->registry->dbFunctions()->setDB( 'mysql', 'realm_DB', array(
+                          'sql_database'                  => $this->settings['syncapp_realm_database'],
+                          'sql_user'                      => $this->settings['syncapp_mysql_user'],
+                          'sql_pass'                      => $this->settings['syncapp_mysql_password'],
+                          'sql_host'                      => $this->settings['syncapp_mysql_ip'],
+                        )
+                    );
+
+            $realm_list = array();
+
+            ipsRegistry::DB('realm_DB')->build(array('select' => '*', 'from' => 'realmlist'));
+            $rlist = ipsRegistry::DB('realm_DB')->execute();
+
+            while( $realms = ipsRegistry::DB('realm_DB')->fetch($rlist))
+                {
+                    $realm_list[$realms['id']] = $realms;
+                }
+                ipsRegistry::DB('realm_DB')->freeResult($rlist);
+                if(count($realm_list)>0)
+                {
+                    //$realms        = array();
+                    $realm_form  = array();
+
+                    foreach($realm_list as $realm)
+                    {
+                        $realm_form[$realm['id']] = '<option value="'.$realm['id'].'">'.$realm['name'].'</option>';
+                        //$realms[$realm['id']] = $realm;
+                    }
+                }
+
+            //$classToLoad = IPSLib::loadLibrary( IPS_KERNEL_PATH . 'classAjax.php', 'classAjax' );
+            //$ajax      = new $classToLoad();
+            //$ajax->returnString('test');
+            //$data = array('teir1' => array('teir2' => array('name' => 'test', 'lastname' => $_POST['lastname'])));
+            //print $data['teir1']['teir2']['name'];
+
+            //print_r($data);
+            //print_r($realm_form[$this->request['realm']]['name']);
+
+            if(isset($this->request['realm_selected']))
+            {
+                $character_list     =   array();
+                $char_form          =   array();
+                $realm_id           =   $this->request['realm'];
+                $characters         =   array();
+
+                /* Temp */
+                $databases = array();
+                $databases['1'] = array('db' => "characters",);
+                $databases['2'] = array('db' => "2");
+
+                /* Debug */
+                //print_r($databases[$id]);
+                //print $databases[$id]['id'];
+                //print_r($this->request);
+                //print $ae['id'];
+
+
+                //if(!isset($this->request['character_selected']))
+                    $this->registry->dbFunctions()->setDB( 'mysql', 'character_DB', array(
+                              'sql_database'                  => $databases[$realm_id]['db'], // $this->settings['syncapp_character_database'],
+                              'sql_user'                      => $this->settings['syncapp_mysql_user'],
+                              'sql_pass'                      => $this->settings['syncapp_mysql_password'],
+                              'sql_host'                      => $this->settings['syncapp_mysql_ip'],
+                            )
+                        );
+
+                    $account_link = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .$this->memberData['member_id']));
+
+                    ipsRegistry::DB('character_DB')->build(array('select' => '*', 'from' => 'characters', 'where' => 'account=' .$account_link['account_id']));
+                    $charlist = ipsRegistry::DB('character_DB')->execute();
+                    while( $chars = ipsRegistry::DB('character_DB')->fetch($charlist))
+                    {
+                        $character_list[] = $chars;
+                    }
+                    ipsRegistry::DB('character_DB')->freeResult($charlist);
+
+                    foreach ($character_list as $character)
+                    {
+                        $char_form[] = '<option value="'.$character['guid'].'">'.$character['name'].'</option>';
+                        $characters[$character['guid']] = $character;
+                    }
+
+                    if(count($character_list)>0)
+                    {
+                        if(isset($this->request['function_selected']))
+                        {
+                            //print($characters[$this->request['character_guid']]['name']);
+                            switch($this->request['function'])
+                            {
+                                case 1:
+                                $cmdLineToSend = 'revive '.$characters[$this->request['character_guid']]['name'];
+                                $soap_command = $this->ExecuteSoapCommand($cmdLineToSend);
+                                if($soap_command['sent'])
+                                    $this->registry->output->redirectScreen("Character ".$characters[$this->request['character_guid']]['name']." has been revived!");
+                                else
+                                    $this->registry->output->redirectScreen("Was unable to revive character ".$characters[$this->request['character_guid']]['name']);
+                                break;
+                                case 2:
+                                $cmdLineToSend = array();
+                                $soap_passed = array();
+                                $cmdLineToSend[] = 'revive '.$characters[$this->request['character_guid']]['name'];
+                                $cmdLineToSend[] = 'tele name '.$characters[$this->request['character_guid']]['name'].' $home';
+                                $soap_command = $this->ExecuteSoapCommand($cmdLineToSend);
+                                foreach($cmdLineToSend as $cmd)
+                                {
+                                    $soap_command = $this->ExecuteSoapCommand($cmd);
+                                    if($soap_command['sent'])
+                                        $soap_passed[$cmd] = 'passed';
+                                    else
+                                        $soap_passed[$cmd] = 'failed';
+                                }
+                                break;
+                            }
+                        }
+                    }
+            }
+            return $this->output .= $this->registry->output->getTemplate('syncApp')->gameCP($realm_form,$char_form);
         }
     }
 
@@ -139,120 +291,123 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
      */
     public function saveForm( $current_area )
     {
-        ipsRegistry::instance()->getClass('class_localization')->loadLanguageFile( array( 'public_lang' ), 'syncApp' );
-        $this->registry->dbFunctions()->setDB( 'mysql', 'world_DB', array(
-                  'sql_database'                  => $this->settings['syncapp_realm_database'],
-                  'sql_user'                      => $this->settings['syncapp_mysql_user'],
-                  'sql_pass'                      => $this->settings['syncapp_mysql_password'],
-                  'sql_host'                      => $this->settings['syncapp_mysql_ip'],
-            )
-        );
-
-            // has account
-        if ($this->request['exist'] == 1)
+        if ( $current_area == 'sync' )
         {
-            $user = strtoupper(ipsRegistry::DB('world_DB')->addSlashes($this->request['syncapp_user']));
-            $row = ipsRegistry::DB('world_DB')->buildAndFetch(array('select' => '*', 'from' => 'account', 'where' => "username='{$user}'"));
+            ipsRegistry::instance()->getClass('class_localization')->loadLanguageFile( array( 'public_lang' ), 'syncApp' );
+            $this->registry->dbFunctions()->setDB( 'mysql', 'realm_DB', array(
+                      'sql_database'                  => $this->settings['syncapp_realm_database'],
+                      'sql_user'                      => $this->settings['syncapp_mysql_user'],
+                      'sql_pass'                      => $this->settings['syncapp_mysql_password'],
+                      'sql_host'                      => $this->settings['syncapp_mysql_ip'],
+                )
+            );
 
-            if ($row)
+                // has account
+            if ($this->request['exist'] == 1)
             {
-                $username = strtoupper($this->request['syncapp_user']);
-                $password = strtoupper($this->request['syncapp_password']);
-                $sha_NameAndPass = strtoupper(SHA1("".$username.":".$password.""));
+                $user = strtoupper(ipsRegistry::DB('realm_DB')->addSlashes($this->request['syncapp_user']));
+                $row = ipsRegistry::DB('realm_DB')->buildAndFetch(array('select' => '*', 'from' => 'account', 'where' => "username='{$user}'"));
 
-                if($row['sha_pass_hash'] === $sha_NameAndPass)
+                if ($row)
                 {
-                    $acctid = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'account_id='  .intval($row['id'])));
-                    $forumid = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .intval($this->memberData['member_id'])));
+                    $username = strtoupper($this->request['syncapp_user']);
+                    $password = strtoupper($this->request['syncapp_password']);
+                    $sha_NameAndPass = strtoupper(SHA1("".$username.":".$password.""));
 
-                    if($acctid || $forumid)
+                    if($row['sha_pass_hash'] === $sha_NameAndPass)
                     {
-                        $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_account_already_synced']);
+                        $acctid = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'account_id='  .intval($row['id'])));
+                        $forumid = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .intval($this->memberData['member_id'])));
+
+                        if($acctid || $forumid)
+                        {
+                            $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_account_already_synced']);
+                            return;
+                        }
+                        else
+                        {
+                            /* Create id sync table */
+                            ipsRegistry::DB()->insert('syncapp_members', array(
+                            'forum_id'      =>  intval($this->memberData['member_id']),
+                            'account_id'    =>  intval($row['id'])));
+
+                            $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['accounct_synced'], $this->settings['base_url'].'app=core&module=usercp&tab=syncApp&area=gamecp');
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_authenticating_password']);
+                        return;
+                    }
+                }
+                else
+                {
+                    $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_account_non_existent']);
+                    return;
+                }
+            }
+                // dose not have account
+            if ($this->request['exist'] == 2)
+            {
+                $user = ipsRegistry::DB('realm_DB')->addSlashes($this->request['syncapp_user']);
+                $row = ipsRegistry::DB('realm_DB')->buildAndFetch(array('select' => '*', 'from' => 'account', 'where' => "username='{$user}'"));
+
+                //TODO -
+                // CHECK FOR LOOPING
+            /*  if($this->settings['syncapp_forum_server_name_match'] == 1)
+                {
+                $val1 = strtoupper($this->request['syncapp_user']);
+                $val2 = strtoupper($this->memberData['member_display_name']);
+
+                    if($val1 != $val2 )
+                    {
+                        $this->registry->output->redirectScreen("Failed: Account name must match Forum username");
+                        return;
+                    }
+                } */
+
+                if ($row)
+                {
+                    $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_username_exists']);
+                    return;
+                }
+                else
+                {
+                    $board_acctid = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' . intval($this->memberData['member_id'])));
+                    $sync_acctid = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'account_id='  .intval($row['id'])));
+
+                    if ($board_acctid || $sync_acctid)
+                    {
+                        $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_account_exists_in_sync']);
                         return;
                     }
                     else
                     {
+                        /* Set up Variables */
+                        $username = $this->request['syncapp_user'];
+                        $password = strtoupper($this->request['syncapp_password']);
+                        $sha_NameAndPass = strtoupper(SHA1("".$username.":".$password.""));
+                        /* End variables */
+
+                        /* create WoW account */
+                        ipsRegistry::DB('realm_DB')->insert('account', array(
+                        'username'      =>  $username,
+                        'sha_pass_hash' =>  $sha_NameAndPass,
+                        'email'         =>  $this->memberData['email'],
+                        'expansion'     =>  intval(2)));
+
+                        /* Grab id from the above query */
+                        $account_ID =   ipsRegistry::DB('realm_DB')->getInsertId();
+
                         /* Create id sync table */
                         ipsRegistry::DB()->insert('syncapp_members', array(
                         'forum_id'      =>  intval($this->memberData['member_id']),
-                        'account_id'    =>  intval($row['id'])));
+                        'account_id'    =>  intval($account_ID)));
 
-                        $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['accounct_synced'], $this->settings['base_url']);
+                        $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['congratulations_account_synced'], $this->settings['base_url'].'app=core&module=usercp&tab=syncApp&area=gamecp');
                         return;
                     }
-                }
-                else
-                {
-                    $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_authenticating_password']);
-                    return;
-                }
-            }
-            else
-            {
-                $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_account_non_existent']);
-                return;
-            }
-        }
-            // dose not have account
-        if ($this->request['exist'] == 2)
-        {
-            $user = ipsRegistry::DB('world_DB')->addSlashes($this->request['syncapp_user']);
-            $row = ipsRegistry::DB('world_DB')->buildAndFetch(array('select' => '*', 'from' => 'account', 'where' => "username='{$user}'"));
-
-            //TODO -
-            // CHECK FOR LOOPING
-        /*  if($this->settings['syncapp_forum_server_name_match'] == 1)
-            {
-            $val1 = strtoupper($this->request['syncapp_user']);
-            $val2 = strtoupper($this->memberData['member_display_name']);
-
-                if($val1 != $val2 )
-                {
-                    $this->registry->output->redirectScreen("Failed: Account name must match Forum username");
-                    return;
-                }
-            } */
-
-            if ($row)
-            {
-                $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_username_exists']);
-                return;
-            }
-            else
-            {
-                $board_acctid = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' . intval($this->memberData['member_id'])));
-                $sync_acctid = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'account_id='  .intval($row['id'])));
-
-                if ($board_acctid || $sync_acctid)
-                {
-                    $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['failed_account_exists_in_sync']);
-                    return;
-                }
-                else
-                {
-                    /* Set up Variables */
-                    $username = $this->request['syncapp_user'];
-                    $password = strtoupper($this->request['syncapp_password']);
-                    $sha_NameAndPass = strtoupper(SHA1("".$username.":".$password.""));
-                    /* End variables */
-
-                    /* create WoW account */
-                    ipsRegistry::DB('world_DB')->insert('account', array(
-                    'username'      =>  $username,
-                    'sha_pass_hash' =>  $sha_NameAndPass,
-                    'email'         =>  $this->memberData['email'],
-                    'expansion'     =>  intval(2)));
-
-                    /* Grab id from the above query */
-                    $account_ID =   ipsRegistry::DB('world_DB')->getInsertId();
-
-                    /* Create id sync table */
-                    ipsRegistry::DB()->insert('syncapp_members', array(
-                    'forum_id'      =>  intval($this->memberData['member_id']),
-                    'account_id'    =>  intval($account_ID)));
-
-                    $this->registry->output->redirectScreen(ipsRegistry::instance()->getClass('class_localization')->words['congratulations_account_synced'], $this->settings['base_url']);
-                    return;
                 }
             }
         }

@@ -21,6 +21,80 @@
   <templategroup group="skin_syncApp">
     <template>
       <template_group>skin_syncApp</template_group>
+      <template_content><![CDATA[<form action='{$this->settings['base_url']}app=syncApp&amp;do=test'']}' method='post' name='theAdminForm'  id='theAdminForm'>
+    <input type='hidden' name='tets' value='test' />
+    {$data['personal']['name']}
+    <input type='submit' value='test' class='button primary' accesskey='s'>
+    </div>
+    </div>
+    </form>]]></template_content>
+      <template_name>appIndexTemplate</template_name>
+      <template_data>$test</template_data>
+      <template_updated>1348308418</template_updated>
+      <template_removable>0</template_removable>
+      <template_user_added>0</template_user_added>
+      <template_user_edited>0</template_user_edited>
+      <template_master_key>root</template_master_key>
+    </template>
+    <template>
+      <template_group>skin_syncApp</template_group>
+      <template_content><![CDATA[<h2 class="ipsType_subtitle ipsSettings_pagetitle"Character CP</h2>
+        <div class="ipsSettings">
+            <fieldset class="ipsSettings_section">
+    <form action="#" name="realm" method="post">
+    <h2 class="ipsType_subtitle ipsSettings_pagetitle">Character CP</h2>
+        <div class="ipsSettings">
+            <h3 class="ipsSettings_sectiontitle">Realm</h3>
+            <select name='realm' id='realm'>
+            <foreach loop="hookPoint:$realm_form as $ke => $realms">
+                {$realms} <!-- options  -->
+            </foreach>
+            </select>
+            </fieldset>
+            <fieldset class="ipsSettings_section">
+            <input type='hidden'  id='realm_checked' name='realm_selected' value='1' />
+            <input id="realm"  class='input_submit' type="submit" value="Submit" />
+            </fieldset>
+            <if test="$this->request['realm_selected'] == 1">
+                <fieldset class="ipsSettings_section">
+                <h3 class="ipsSettings_sectiontitle">Character</h3>
+                <select name='character_guid' id='character_guid'>
+                <foreach loop="hookPoint:$char_form as $ke => $characters">
+                    {$characters} <!-- options  -->
+                </foreach>
+            </select>
+            </fieldset>
+            <fieldset class="ipsSettings_section">
+            <input type='hidden'  id='character_selected' name='character_selected' value='1' />
+            <input id="character"  class='input_submit' type="submit" value="Submit" />
+            </fieldset>
+            <else />
+            </if>
+            <if test="$this->request['character_selected'] == 1">
+                <fieldset class="ipsSettings_section">
+                <h3 class="ipsSettings_sectiontitle">Control</h3>
+                <select name='function' id='function'>
+                <option value="1">Revive</option>
+                <option value="2">Unstuck</option>
+                </select>
+            </fieldset>
+            <fieldset class="ipsSettings_section">
+            <input type='hidden' id='function_selected' name='function_selected' value='1' />
+            <input id="character" class='input_submit' type="submit" value="Submit" />
+            </fieldset>
+            </if>
+            </form>
+</div></div>]]></template_content>
+      <template_name>gameCP</template_name>
+      <template_data>$realm_form,$char_form</template_data>
+      <template_updated>1348308418</template_updated>
+      <template_removable>0</template_removable>
+      <template_user_added>0</template_user_added>
+      <template_user_edited>0</template_user_edited>
+      <template_master_key>root</template_master_key>
+    </template>
+    <template>
+      <template_group>skin_syncApp</template_group>
       <template_content><![CDATA[<h2 class="ipsType_subtitle ipsSettings_pagetitle">{$this->lang->words['account_options']}</h2>
     <div class="ipsSettings">
         <fieldset class="ipsSettings_section">
@@ -44,7 +118,7 @@
             </fieldset>]]></template_content>
       <template_name>usercpForm</template_name>
       <template_data/>
-      <template_updated>1344347436</template_updated>
+      <template_updated>1348308418</template_updated>
       <template_removable>0</template_removable>
       <template_user_added>0</template_user_added>
       <template_user_edited>0</template_user_edited>

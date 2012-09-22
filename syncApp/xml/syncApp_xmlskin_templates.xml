@@ -24,7 +24,18 @@
       <template_content><![CDATA[<!--no data in this master skin-->]]></template_content>
       <template_name>appIndexTemplate</template_name>
       <template_data>$test</template_data>
-      <template_updated>1342433697</template_updated>
+      <template_updated>1348308418</template_updated>
+      <template_removable>0</template_removable>
+      <template_user_added>0</template_user_added>
+      <template_user_edited>0</template_user_edited>
+      <template_master_key>xmlskin</template_master_key>
+    </template>
+    <template>
+      <template_group>skin_syncApp</template_group>
+      <template_content><![CDATA[<!--no data in this master skin-->]]></template_content>
+      <template_name>gameCP</template_name>
+      <template_data>$realm_form,$char_form</template_data>
+      <template_updated>1348308418</template_updated>
       <template_removable>0</template_removable>
       <template_user_added>0</template_user_added>
       <template_user_edited>0</template_user_edited>
@@ -35,11 +46,22 @@
       <template_content><![CDATA[<!--no data in this master skin-->]]></template_content>
       <template_name>test</template_name>
       <template_data/>
-      <template_updated>1342433697</template_updated>
+      <template_updated>1348308418</template_updated>
       <template_removable>0</template_removable>
       <template_user_added>0</template_user_added>
       <template_user_edited>0</template_user_edited>
-      <template_master_key>root</template_master_key>
+      <template_master_key>xmlskin</template_master_key>
+    </template>
+    <template>
+      <template_group>skin_syncApp</template_group>
+      <template_content><![CDATA[<!--no data in this master skin-->]]></template_content>
+      <template_name>usercpForm</template_name>
+      <template_data/>
+      <template_updated>1348308418</template_updated>
+      <template_removable>0</template_removable>
+      <template_user_added>0</template_user_added>
+      <template_user_edited>0</template_user_edited>
+      <template_master_key>xmlskin</template_master_key>
     </template>
   </templategroup>
 </templates>
