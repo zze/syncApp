@@ -181,24 +181,12 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
                 ipsRegistry::DB('realm_DB')->freeResult($rlist);
                 if(count($realm_list)>0)
                 {
-                    //$realms        = array();
                     $realm_form  = array();
-
                     foreach($realm_list as $realm)
                     {
                         $realm_form[$realm['id']] = '<option value="'.$realm['id'].'">'.$realm['name'].'</option>';
-                        //$realms[$realm['id']] = $realm;
                     }
                 }
-
-            //$classToLoad = IPSLib::loadLibrary( IPS_KERNEL_PATH . 'classAjax.php', 'classAjax' );
-            //$ajax      = new $classToLoad();
-            //$ajax->returnString('test');
-            //$data = array('teir1' => array('teir2' => array('name' => 'test', 'lastname' => $_POST['lastname'])));
-            //print $data['teir1']['teir2']['name'];
-
-            //print_r($data);
-            //print_r($realm_form[$this->request['realm']]['name']);
 
             if(isset($this->request['realm_selected']))
             {
@@ -206,11 +194,9 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
                 $char_form          =   array();
                 $realm_id           =   $this->request['realm'];
                 $characters         =   array();
+                $databases          =   array();
 
-                /* Temp */
-                $databases = array();
-                $databases['1'] = array('db' => "characters",);
-                $databases['2'] = array('db' => "2");
+                require_once( IPS_ROOT_PATH . '../conf_multiRealm.php' );
 
                 /* Debug */
                 //print_r($databases[$id]);
@@ -248,7 +234,6 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
                     {
                         if(isset($this->request['function_selected']))
                         {
-                            //print($characters[$this->request['character_guid']]['name']);
                             switch($this->request['function'])
                             {
                                 case 1:
