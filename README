@@ -7,11 +7,11 @@ Install
 1.5) Drag the conf_multiRealm.php to *IP.board*/HERE*
 
 2) Login in to the forums (ACP) admin control panel and navigate to "System > Applications & Modules > Manage Applications & Modules."
-Find the box with the title "Applications not installed" and hit the button 'Install' over SyncApp
+Find the box with the title "Applications not installed" and hit the button 'Install' for SyncApp.
 
 3) After install is complete navigate to System > System Settings > SyncApp > General.
 3.5) Go through the entire form and be sure to enable SOAP.
-[Most features depend on SOAP being enabled and able to comunicate]
+[Most features depend on SOAP being enabled and able to communicate]
 
 4) Usernames must be limited to alphanumeric go to: System > System Settings > Members > Username Restrictions
 
@@ -22,6 +22,6 @@ also check doc/Doc.pdf
 _______________________________
 
 To enable multi-realm edit *IP.board*/conf_multiRealm.php
-the ['<ID>'] must match the realm_ID for each spesfic realm (to ->) character_database
+the ['<ID>'] must match the realm_ID for each specific realm (to ->) character_database
 
 *Unique DB login details TODO 
