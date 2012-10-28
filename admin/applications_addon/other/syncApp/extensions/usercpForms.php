@@ -207,7 +207,7 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
 
                 //if(!isset($this->request['character_selected']))
                     $this->registry->dbFunctions()->setDB( 'mysql', 'character_DB', array(
-                              'sql_database'                  => $databases[$realm_id]['db'], // $this->settings['syncapp_character_database'],
+                              'sql_database'                  => $databases[$realm_id]['character_db_name'], // $this->settings['syncapp_character_database'],
                               'sql_user'                      => $this->settings['syncapp_mysql_user'],
                               'sql_pass'                      => $this->settings['syncapp_mysql_password'],
                               'sql_host'                      => $this->settings['syncapp_mysql_ip'],
