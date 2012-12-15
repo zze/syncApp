@@ -75,6 +75,31 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
         $this->tab_name = '';
     }
 
+	public function testSQL()
+	{
+		$sqlPassed = FALSE;
+
+        $classname = "db_driver_Mysql";
+            $sync_DB = new $classname;
+            $sync_DB->obj['sql_database']  = $this->settings['syncapp_realm_database'];
+            $sync_DB->obj['sql_user']      = $this->settings['syncapp_mysql_user'];
+            $sync_DB->obj['sql_pass']      = $this->settings['syncapp_mysql_password'];
+            $sync_DB->obj['sql_host']      = $this->settings['syncapp_mysql_ip'];
+            $sync_DB->return_die = true;
+
+        if ( ! $sync_DB->connect() )
+        {
+            return $sqlPassed;
+        }
+		else
+		{
+			$sqlPassed = TRUE;
+			return $sqlPassed;
+		}
+
+		return
+	}
+
     public function ExecuteSoapCommand($command)
     {
         try
@@ -96,6 +121,8 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
 
     public function getLinks()
     {
+		$sqlPassed = FALSE;
+
         $classname = "db_driver_Mysql";
             $sync_DB = new $classname;
             $sync_DB->obj['sql_database']  = $this->settings['syncapp_realm_database'];
@@ -106,31 +133,37 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
 
         if ( ! $sync_DB->connect() )
         {
-            return;
+			$failed = 1;
+            return $failed;
         }
+		if ($failed !=1)
+		{
+	        $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .intval($this->memberData['member_id'])));
 
-        $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .intval($this->memberData['member_id'])));
+	        if( $row['forum_id'] )
+	        {
+	           //return;
+	        }
+	        else
+	        {
+	            $array = array();
+	            $array[] = array( 'url'    => 'area=sync',
+	                              'title'  => 'Account Sync',
+	                              'active' => $this->request['tab'] == 'myapp' && $this->request['area'] == 'sync' ? 1 : 0,
+	                              'area'   => 'sync');
+	        	return $array;
+	        }
+	        $array[] = array( 'url'    => 'area=gamecp',
+	                          'title'  => 'Game CP',
+	                          'active' => $this->request['tab'] == 'myapp' && $this->request['area'] == 'gamecp' ? 1 : 0,
+	                          'area'   => 'gamecp');
 
-        if( $row['forum_id'] )
-        {
-           //return;
-        }
-        else
-        {
-            $array = array();
-            $array[] = array( 'url'    => 'area=sync',
-                              'title'  => 'Account Sync',
-                              'active' => $this->request['tab'] == 'myapp' && $this->request['area'] == 'sync' ? 1 : 0,
-                              'area'   => 'sync');
-            return $array;
-        }
-            $array[] = array( 'url'    => 'area=gamecp',
-                              'title'  => 'Game CP',
-                              'active' => $this->request['tab'] == 'myapp' && $this->request['area'] == 'gamecp' ? 1 : 0,
-                              'area'   => 'gamecp');
-
-            return $array;
-
+	        return $array;
+		}
+		else
+		{
+		return;
+		}
     }
 
     public function runCustomEvent( $currentArea )
@@ -196,7 +229,7 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
                 $characters         =   array();
                 $databases          =   array();
                 $sqlPassed          =   FALSE;
-                require_once( IPS_ROOT_PATH . '../conf_multiRealm.php' );
+                include( IPS_ROOT_PATH . '../conf_multiRealm.php' );
 
                 /* Debug */
                 //print_r($databases[$id]);
@@ -212,7 +245,29 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
                     $sync_DB->obj['sql_pass']      = $this->settings['syncapp_mysql_password'];
                     $sync_DB->obj['sql_host']      = $this->settings['syncapp_mysql_ip'];
                     $sync_DB->return_die = true;
-                    if ( ! $sync_DB->connect() )
+                     if ( ! $sync_DB->connect() )
+		             {
+		             	$failed = 1;
+		                return $failed;
+		                /* At this point we dont have a connection so ABORT! else database driver error */
+		             }
+
+					if ( $failed != 1 )
+			       	{
+						$this->sqlPassed = TRUE;
+	                    $this->registry->dbFunctions()->setDB( 'mysql', 'character_DB', array(
+	                              'sql_database'                  => $databases[$realm_id]['character_db_name'], // $this->settings['syncapp_character_database'],
+	                              'sql_user'                      => $this->settings['syncapp_mysql_user'],
+	                              'sql_pass'                      => $this->settings['syncapp_mysql_password'],
+	                              'sql_host'                      => $this->settings['syncapp_mysql_ip'],
+	                            )
+	                        );
+					}
+                    $account_link = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .$this->memberData['member_id']));
+
+                    ipsRegistry::DB('character_DB')->build(array('select' => '*', 'from' => 'characters', 'where' => 'account=' .$account_link['account_id']));
+                    $charlist = ipsRegistry::DB('character_DB')->execute();
+                    while( $chars = ipsRegistry::DB('character_DB')->fetch($charlist))
                     {
                         $fail = 1;
                         return $fail;
