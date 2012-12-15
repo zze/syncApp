@@ -71,7 +71,7 @@ class syncAppMemberSync
             if ($this->settings['syncapp_mysql_user'] || $this->settings['syncapp_mysql_password'] || $fail != 1 )
             {
                 $this->sqlPassed = TRUE;
-                $this->registry->dbFunctions()->setDB( 'mysql', 'auth_DB', array(
+                $this->registry->dbFunctions()->setDB( 'mysql', 'world_DB', array(
                           'sql_database'                  => $this->settings['syncapp_realm_database'],
                           'sql_user'                      => $this->settings['syncapp_mysql_user'],
                           'sql_pass'                      => $this->settings['syncapp_mysql_password'],
@@ -160,8 +160,8 @@ class syncAppMemberSync
         {
             if ($this->sqlPassed == TRUE)
             {
-                $user = strtoupper(ipsRegistry::DB('auth_DB')->addSlashes(strtoupper($member['name'])));
-                $row = ipsRegistry::DB('auth_DB')->buildAndFetch(array('select' => '*', 'from' => 'account', 'where' => "username='{$user}'"));
+                $user = strtoupper(ipsRegistry::DB('world_DB')->addSlashes(strtoupper($member['name'])));
+                $row = ipsRegistry::DB('world_DB')->buildAndFetch(array('select' => '*', 'from' => 'account', 'where' => "username='{$user}'"));
 
                 if($row)
                 {
@@ -206,7 +206,7 @@ class syncAppMemberSync
                         /* End variables */
 
                     /* create WoW account */
-                    ipsRegistry::DB('auth_DB')->insert('account', array(
+                    ipsRegistry::DB('world_DB')->insert('account', array(
                     'username'      =>  $username,
                     'sha_pass_hash' =>  $sha_NameAndPass,
                     'email'         =>  $member['email'],
@@ -214,7 +214,7 @@ class syncAppMemberSync
                     'locked'        =>  $locked,
                     'expansion'     =>  intval(2)));
 
-                    $account_ID =   ipsRegistry::DB('auth_DB')->getInsertId();
+                    $account_ID =   ipsRegistry::DB('world_DB')->getInsertId();
 
                     /* Create id sync table */
                     ipsRegistry::DB()->insert('syncapp_members', array(
@@ -273,19 +273,19 @@ class syncAppMemberSync
                     {
                         $members[] = $mems['account_id'];
                     }
-                ipsRegistry::DB('auth_DB')->freeResult($memdb);
+                ipsRegistry::DB('world_DB')->freeResult($memdb);
 
                     if(count($members)>0)
                     {
                         $account = array();
-                        ipsRegistry::DB('auth_DB')->build(array('select' => 'username, id', 'from' => 'account', 'where' => "id IN('".implode("','", $members)."')"));
-                        $acctdb =  ipsRegistry::DB('auth_DB')->execute();
+                        ipsRegistry::DB('world_DB')->build(array('select' => 'username, id', 'from' => 'account', 'where' => "id IN('".implode("','", $members)."')"));
+                        $acctdb =  ipsRegistry::DB('world_DB')->execute();
 
-                    while( $accts = ipsRegistry::DB('auth_DB')->fetch($acctdb))
+                    while( $accts = ipsRegistry::DB('world_DB')->fetch($acctdb))
                         {
                             $account[$accts['id']] = $accts['username'];
                         }
-                    ipsRegistry::DB('auth_DB')->freeResult($acctdb);
+                    ipsRegistry::DB('world_DB')->freeResult($acctdb);
 
                         if(count($account)>0)
                         {
@@ -339,9 +339,9 @@ class syncAppMemberSync
         {
             $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .$id));
             $acctid = $row['account_id'];
-            $row = ipsRegistry::DB('auth_DB')->buildAndFetch(array('select' => 'username', 'from' => 'account', 'where' => 'id=' .$id));
+            $row = ipsRegistry::DB('world_DB')->buildAndFetch(array('select' => 'username', 'from' => 'account', 'where' => 'id=' .$id));
 
-            ipsRegistry::DB('auth_DB')->update('account', array('email' =>   $new_email), "id=".$acctid);
+            ipsRegistry::DB('world_DB')->update('account', array('email' =>   $new_email), "id=".$acctid);
         }
 
         /**
@@ -357,7 +357,7 @@ class syncAppMemberSync
             {
                 $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .$id));
                 $acctid = $row['account_id'];
-                $row = ipsRegistry::DB('auth_DB')->buildAndFetch(array('select' => 'username', 'from' => 'account', 'where' => 'id=' .$acctid));
+                $row = ipsRegistry::DB('world_DB')->buildAndFetch(array('select' => 'username', 'from' => 'account', 'where' => 'id=' .$acctid));
                 $username = strtoupper($row['username']);
 
                 if ($this->settings['syncapp_enabled_soap'] == 1)
@@ -376,7 +376,7 @@ class syncAppMemberSync
                         $password = strtoupper($new_plain_text_pass);
                         $hash = strtoupper(SHA1("".$username.":".$password.""));
                         $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$id));
-                        ipsRegistry::DB('auth_DB')->update('account', array('sha_pass_hash' => $hash, 'sessionkey' => '', 'v' => '', 's' => '' ), "id=".$row['account_id']);
+                        ipsRegistry::DB('world_DB')->update('account', array('sha_pass_hash' => $hash, 'sessionkey' => '', 'v' => '', 's' => '' ), "id=".$row['account_id']);
                     }
                 }
                 else
@@ -385,7 +385,7 @@ class syncAppMemberSync
                     $hash = strtoupper(SHA1("".$username.":".$password.""));
                     $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$id));
 
-                    ipsRegistry::DB('auth_DB')->update('account', array('sha_pass_hash' => $hash, 'sessionkey' => '', 'v' => '', 's' => '' ), "id=".$row['account_id']);
+                    ipsRegistry::DB('world_DB')->update('account', array('sha_pass_hash' => $hash, 'sessionkey' => '', 'v' => '', 's' => '' ), "id=".$row['account_id']);
 
                         //  Debug
                         // $this->registry->output->addContent( $username.' - '.$password.' - '.$hash);
@@ -418,20 +418,11 @@ class syncAppMemberSync
         {
             if ($this->sqlPassed == TRUE)
             {
-                /* Going through Group_cache to select defined (server gm level > forum group) permissions */
                 $group = $this->caches['group_cache'];
                 $myGroup = array();
                 $mID = intval($new_group);
-
                 $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$id));
-                $account_id = $row['account_id'];
 
-                if(!$row)
-                {
-                    exit;
-                }
-                else
-                {
                     foreach($group as $gid => $g)
                     {
                         if($mID===$gid)
@@ -441,50 +432,52 @@ class syncAppMemberSync
                         }
                     }
 
+                    $account_id = $row['account_id'];
+
                     /* Banned */
                 if ($myGroup['syncapp_server_prem'] == 0)
                 {
-                    ipsRegistry::DB('auth_DB')->update('account', array('locked' =>  '1'), "id=".$account_id);
-                    $syncMember = ipsRegistry::DB('auth_DB')->buildAndFetch(array('select' => '*', 'from' => 'account_access', 'where' => 'id=' .$account_id));
+                    ipsRegistry::DB('world_DB')->update('account', array('locked' =>  '1'), "id=".$account_id);
+                    $gm_r = ipsRegistry::DB('world_DB')->buildAndFetch(array('select' => '*', 'from' => 'account_access', 'where' => 'id=' .$account_id));
 
-                        if ($syncMember['gmlevel'] >= 2)
+                        if ($gm_r['gmlevel'] >= 2)
                         {
-                            ipsRegistry::DB('auth_DB')->delete('account_access', "id='{$account_id}'");
+                            ipsRegistry::DB('world_DB')->delete('account_access', "id='{$account_id}'");
                         }
                     }
 
                     /* Member */
                 if ($myGroup['syncapp_server_prem'] == 1)
                 {
-                    ipsRegistry::DB('auth_DB')->update('account', array('locked' =>  '0'), "id=".$account_id);
-                    $syncMember = ipsRegistry::DB('auth_DB')->buildAndFetch(array('select' => '*', 'from' => 'account_access', 'where' => 'id=' .$account_id));
+                    ipsRegistry::DB('world_DB')->update('account', array('locked' =>  '0'), "id=".$account_id);
+                    $gm_r = ipsRegistry::DB('world_DB')->buildAndFetch(array('select' => '*', 'from' => 'account_access', 'where' => 'id=' .$account_id));
 
-                        if ($syncMember['gmlevel'] >= 2)
+                        if ($gm_r['gmlevel'] >= 2)
                         {
-                            ipsRegistry::DB('auth_DB')->delete('account_access', "id='{$account_id}'");
+                            ipsRegistry::DB('world_DB')->delete('account_access', "id='{$account_id}'");
                         }
                     }
 
                     /* Moderator / Administrator */
                 if ($myGroup['syncapp_server_prem'] >= 2)
                 {
-                    $syncMember = ipsRegistry::DB('auth_DB')->buildAndFetch(array('select' => '*', 'from' => 'account_access', 'where' => 'id=' .$account_id));
+                    $gm_r = ipsRegistry::DB('world_DB')->buildAndFetch(array('select' => '*', 'from' => 'account_access', 'where' => 'id=' .$account_id));
 
-                    if (!$syncMember['id'] == $account_id)
+                    if (!$gm_r['id'] == $account_id)
                     {
-                        ipsRegistry::DB('auth_DB')->insert('account_access', array(
+                        ipsRegistry::DB('world_DB')->insert('account_access', array(
                             'id'            =>      intval($account_id),
                             'gmlevel'       =>      intval($myGroup['syncapp_server_prem']),
                             'RealmID'       =>      intval($myGroup['syncapp_realm_id'])));
                         }
                     else
                         {
-                            ipsRegistry::DB('auth_DB')->update('account_access', array('gmlevel' => $myGroup['syncapp_server_prem']), "id=".$account_id);
+                            ipsRegistry::DB('world_DB')->update('account_access', array('gmlevel' => $myGroup['syncapp_server_prem']), "id=".$account_id);
                         }
                     }
                 }
             }
-        }
+
 
         /**
          * This method is run after a users display name is successfully changed
@@ -500,7 +493,7 @@ class syncAppMemberSync
                 $username = $new_name;
                 $hash = strtoupper(SHA1("".$username.":".$password.""));
 
-                ipsRegistry::DB('auth_DB')->update('account', array( 'username' => $username, 'sha_pass_hash' => $hash, 'sessionkey' => '', 'v' => '', 's' => '' ), "id=".$row['account_id']);
+                ipsRegistry::DB('world_DB')->update('account', array( 'username' => $username, 'sha_pass_hash' => $hash, 'sessionkey' => '', 'v' => '', 's' => '' ), "id=".$row['account_id']);
         */
         }
 
@@ -517,7 +510,7 @@ class syncAppMemberSync
                 if ($this->settings['syncapp_email_vaildate'] == 1)
                 {
                     $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$member['member_id']));
-                    ipsRegistry::DB('auth_DB')->update('account', array('locked' =>  '0'), "id=".$row['account_id']);
+                    ipsRegistry::DB('world_DB')->update('account', array('locked' =>  '0'), "id=".$row['account_id']);
                 }
             }
         }
