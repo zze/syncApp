@@ -30,47 +30,44 @@ public function __destruct()
  * Show forums group form
  */
 public function acp_group_form_main( $group, $tabId )
-{
-    $form = array();
-    $val = $this->caches['group_cache'][ $group['g_id']]['syncapp_server_prem'];
-    $form['realm_id']  = $this->registry->output->formInput( "syncapp_realm_id", '-1' );
-    $form_server_prem  = ipsRegistry::getClass('output')->formDropdown( "syncapp_server_prem", array( array( '3', 'Administrator' ), array( '2', 'Moderator' ), array( '1', 'Member'), array( '0', 'Banned' ) ), $val );
+    {
+        $form = array();
+        $val  = $this->caches['group_cache'][ $group['g_id']]['syncapp_group_permission_levels'];
+        $form['realm_id']  = $this->registry->output->formInput( "syncapp_realm_id", '-1' );
+        $form_group_permission_levels  = ipsRegistry::getClass('output')->formDropdown( "syncapp_group_permission_levels", array( array( '3', 'Administrator' ), array( '2', 'Moderator' ), array( '1', 'Member'), array( '0', 'Banned' ) ), $val );
 
-    $IPBHTML = "";
+        $IPBHTML = "";
+        $IPBHTML .= <<<EOF
 
-    $IPBHTML .= <<<EOF
-
-    <div id='tab_GROUPS_{$tabId}_content'>
-            <table class='ipsTable double_pad'>
-                    <tr>
-                            <th colspan='2'>Group options</th>
-                    </tr>
-                     <tr>
-                             <td class='field_title'>
-                                    <strong class='title'>Realm id:</strong>
-                            </td>
-                             <td class='field_field'>
-                             {$form['realm_id']}<br />
-                             <span class='desctext'></span>
-                     </td>
-                     </tr>
-                     <tr>
-                             <td class='field_title'>
-                                    <strong class='title'>Server premissions group:</strong>
-                            </td>
-                             <td class='field_field'>
-                             {$form_server_prem}<br />
-                             <span class='desctext'></span>
-                     </td>
-                     </tr>
-       </table>
-</div>
-
+        <div id='tab_GROUPS_{$tabId}_content'>
+                <table class='ipsTable double_pad'>
+                        <tr>
+                                <th colspan='2'>Group options</th>
+                        </tr>
+                         <tr>
+                                 <td class='field_title'>
+                                        <strong class='title'>Realm id:</strong>
+                                </td>
+                                 <td class='field_field'>
+                                 {$form['realm_id']}<br />
+                                 <span class='desctext'></span>
+                         </td>
+                         </tr>
+                         <tr>
+                                 <td class='field_title'>
+                                        <strong class='title'>Server premissions group:</strong>
+                                </td>
+                                 <td class='field_field'>
+                                 {$form_group_permission_levels}<br />
+                                 <span class='desctext'></span>
+                         </td>
+                         </tr>
+           </table>
+    </div>
 EOF;
 
-
-return $IPBHTML;
-}
+    return $IPBHTML;
+    }
 
 /**
  * Display forum group form tabs
@@ -78,12 +75,11 @@ return $IPBHTML;
 public function acp_group_form_tabs( $group, $tabId )
 {
     $IPBHTML = "";
-
     $IPBHTML .= <<<EOF
     <li id='tab_GROUPS_{$tabId}' class=''>syncApp</li>
 EOF;
 
-return $IPBHTML;
-}
+	return $IPBHTML;
+	}
 
 }

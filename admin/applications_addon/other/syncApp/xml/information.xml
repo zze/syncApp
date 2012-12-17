@@ -22,7 +22,7 @@
 		<name>SyncApp</name>
 		<public_name>SyncApp</public_name>
 		<author>Zze - jz3731@gmail.com</author>
-		<description>Syncs account information between the forum a wow emulated server.</description>
+		<description>Synchronization between forum and game accounts</description>
 		<templategroups>
 			<template match="exact">skin_syncApp</template>
 		</templategroups>

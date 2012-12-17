@@ -49,18 +49,13 @@ class syncAppMemberSync
             $this->caches     =& $this->registry->cache()->fetchCaches();
 
             $sqlPassed = FALSE;
-
             $classname = "db_driver_Mysql";
-
                 $sync_DB = new $classname;
-
                 $sync_DB->obj['sql_database']  = $this->settings['syncapp_realm_database'];
                 $sync_DB->obj['sql_user']      = $this->settings['syncapp_mysql_user'];
                 $sync_DB->obj['sql_pass']      = $this->settings['syncapp_mysql_password'];
                 $sync_DB->obj['sql_host']      = $this->settings['syncapp_mysql_ip'];
-
                 $sync_DB->return_die = true;
-
                 if ( ! $sync_DB->connect() )
                 {
                     $fail = 1;
@@ -72,10 +67,10 @@ class syncAppMemberSync
             {
                 $this->sqlPassed = TRUE;
                 $this->registry->dbFunctions()->setDB( 'mysql', 'auth_DB', array(
-                          'sql_database'                  => $this->settings['syncapp_realm_database'],
-                          'sql_user'                      => $this->settings['syncapp_mysql_user'],
-                          'sql_pass'                      => $this->settings['syncapp_mysql_password'],
-                          'sql_host'                      => $this->settings['syncapp_mysql_ip'],
+                          'sql_database'    => $this->settings['syncapp_realm_database'],
+                          'sql_user'        => $this->settings['syncapp_mysql_user'],
+                          'sql_pass'        => $this->settings['syncapp_mysql_password'],
+                          'sql_host'        => $this->settings['syncapp_mysql_ip'],
                         )
                     );
             }
@@ -114,9 +109,9 @@ class syncAppMemberSync
             {
                 $cliente = new SoapClient(NULL, array(
                     "location" => $this->settings['syncapp_soap_ip'], //"http://127.0.0.1:7878/",
-                    "uri"   => "urn:TC",
-                    "style" => SOAP_RPC,
-                    "login" => $this->settings['syncapp_soap_user'],
+                    "uri"      => "urn:TC",
+                    "style"    => SOAP_RPC,
+                    "login"    => $this->settings['syncapp_soap_user'],
                     "password" => $this->settings['syncapp_soap_password']));
 
             $result = $cliente->executeCommand(new SoapParam($command, "command"));
@@ -186,7 +181,7 @@ class syncAppMemberSync
                     {
                         $password = strtoupper($this->request['PassWord']);
                     }
-                    else  // User or admin creating the account?
+                    else  // User or admin creating the account
                     {
                         $password = strtoupper($this->request['password']);
                     }
@@ -195,7 +190,7 @@ class syncAppMemberSync
                     {
                         $locked = intval(1);
                     }
-                    else // Force user to vaildate email before allowing server access?
+                    else // Force user to vaildate email before allowing server access
                     {
                         $locked = intval(0);
                     }
@@ -214,45 +209,14 @@ class syncAppMemberSync
                     'locked'        =>  $locked,
                     'expansion'     =>  intval(2)));
 
-                    $account_ID =   ipsRegistry::DB('auth_DB')->getInsertId();
-
                     /* Create id sync table */
+                    $account_ID =   ipsRegistry::DB('auth_DB')->getInsertId();
                     ipsRegistry::DB()->insert('syncapp_members', array(
                     'forum_id'      =>  $member['member_id'],
                     'account_id'    =>  $account_ID));
-
                     }
                 }
             }
-        }
-
-        /**
-         * This method is run when the register form is displayed to a user
-         *
-         * @return      @e void
-         */
-        public function onRegisterForm()
-        {
-        }
-
-        /**
-         * This method is ren when a user successfully logs in
-         *
-         * @param       array    $member        Array of member data
-         * @return      @e void
-         */
-        public function onLogin( $member )
-        {
-        }
-
-        /**
-         * This method is run when a user logs out
-         *
-         * @param       array    $member        Array of member data
-         * @return      @e void
-         */
-        public function onLogOut( $member )
-        {
         }
 
         /**
@@ -289,19 +253,18 @@ class syncAppMemberSync
 
                         if(count($account)>0)
                         {
-                            foreach($account as $id => $m)
+                            foreach($account as $id => $member)
                             {
-                                //do stuff with $m
-                                $cmdLineToSend = 'account delete '.$m;
+                                $cmdLineToSend = 'account delete '.$member;
                                 $soap_command = $this->ExecuteSoapCommand($cmdLineToSend);
 
                                 if(!$soap_command['sent'])
                                 {
-                                    ipsRegistry::DB()->update('syncapp_members', array('deleted' => '1'),  "account_id='{$id}'");
+                                    ipsRegistry::DB()->update('syncapp_members', array('deleted' => '1'), "account_id='{$id}'");
                                 }
                                 else
                                 {
-                                    ipsRegistry::DB()->delete('syncapp_members',  "account_id='{$id}'");
+                                    ipsRegistry::DB()->delete('syncapp_members', "account_id='{$id}'");
                                 }
                             }
                         }
@@ -309,11 +272,10 @@ class syncAppMemberSync
             }
             else
             {
-                ipsRegistry::DB()->delete('syncapp_members',  "account_id ".$mids);
                 return;
             }
         }
-            // Credit to: Marcher
+            // Credits to: Marcher
             /* Big thanks */
 
         /**
@@ -330,24 +292,22 @@ class syncAppMemberSync
         /**
          * This method is run after a users email address is successfully changed
          *
-         * @param  integer  $id          Member ID
+         * @param  integer  $id         Member ID
          * @param  string   $new_email  New email address
          * @param  string       $old_email      Old email address
          * @return void
          */
         public function onEmailChange( $id, $new_email, $old_email )
         {
-            $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .$id));
+            $row    = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id='  .$id));
             $acctid = $row['account_id'];
-            $row = ipsRegistry::DB('auth_DB')->buildAndFetch(array('select' => 'username', 'from' => 'account', 'where' => 'id=' .$id));
-
-            ipsRegistry::DB('auth_DB')->update('account', array('email' =>   $new_email), "id=".$acctid);
+            ipsRegistry::DB('auth_DB')->update('account', array('email' => $new_email), "id=".$acctid);
         }
 
         /**
          * This method is run after a users password is successfully changed
          *
-         * @param       integer $id                                             Member ID
+         * @param       integer $id                     Member ID
          * @param       string  $new_plain_text_pass    The new password
          * @return      @e void
          */
@@ -384,7 +344,6 @@ class syncAppMemberSync
                     $password = strtoupper($new_plain_text_pass);
                     $hash = strtoupper(SHA1("".$username.":".$password.""));
                     $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$id));
-
                     ipsRegistry::DB('auth_DB')->update('account', array('sha_pass_hash' => $hash, 'sessionkey' => '', 'v' => '', 's' => '' ), "id=".$row['account_id']);
 
                         //  Debug
@@ -409,7 +368,7 @@ class syncAppMemberSync
         /**
          * This method is run after a users group is successfully changed
          *
-         * @param       integer $id                     Member ID
+         * @param       integer $id             Member ID
          * @param       integer $new_group      New Group ID
          * @param       integer $old_group      Old Group ID
          * @return      @e void
@@ -419,11 +378,11 @@ class syncAppMemberSync
             if ($this->sqlPassed == TRUE)
             {
                 /* Going through Group_cache to select defined (server gm level > forum group) permissions */
-                $group = $this->caches['group_cache'];
+                $group   = $this->caches['group_cache'];
                 $myGroup = array();
-                $mID = intval($new_group);
+                $mID     = intval($new_group);
 
-                $row = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$id));
+                $row        = ipsRegistry::DB()->buildAndFetch(array('select' => '*', 'from' => 'syncapp_members', 'where' => 'forum_id=' .$id));
                 $account_id = $row['account_id'];
 
                 if(!$row)
@@ -442,7 +401,7 @@ class syncAppMemberSync
                     }
 
                     /* Banned */
-                if ($myGroup['syncapp_server_prem'] == 0)
+                if ($myGroup['syncapp_group_permission_levels'] == 0)
                 {
                     ipsRegistry::DB('auth_DB')->update('account', array('locked' =>  '1'), "id=".$account_id);
                     $syncMember = ipsRegistry::DB('auth_DB')->buildAndFetch(array('select' => '*', 'from' => 'account_access', 'where' => 'id=' .$account_id));
@@ -454,7 +413,7 @@ class syncAppMemberSync
                     }
 
                     /* Member */
-                if ($myGroup['syncapp_server_prem'] == 1)
+                if ($myGroup['syncapp_group_permission_levels'] == 1)
                 {
                     ipsRegistry::DB('auth_DB')->update('account', array('locked' =>  '0'), "id=".$account_id);
                     $syncMember = ipsRegistry::DB('auth_DB')->buildAndFetch(array('select' => '*', 'from' => 'account_access', 'where' => 'id=' .$account_id));
@@ -466,7 +425,7 @@ class syncAppMemberSync
                     }
 
                     /* Moderator / Administrator */
-                if ($myGroup['syncapp_server_prem'] >= 2)
+                if ($myGroup['syncapp_group_permission_levels'] >= 2)
                 {
                     $syncMember = ipsRegistry::DB('auth_DB')->buildAndFetch(array('select' => '*', 'from' => 'account_access', 'where' => 'id=' .$account_id));
 
@@ -474,12 +433,12 @@ class syncAppMemberSync
                     {
                         ipsRegistry::DB('auth_DB')->insert('account_access', array(
                             'id'            =>      intval($account_id),
-                            'gmlevel'       =>      intval($myGroup['syncapp_server_prem']),
+                            'gmlevel'       =>      intval($myGroup['syncapp_group_permission_levels']),
                             'RealmID'       =>      intval($myGroup['syncapp_realm_id'])));
                         }
                     else
                         {
-                            ipsRegistry::DB('auth_DB')->update('account_access', array('gmlevel' => $myGroup['syncapp_server_prem']), "id=".$account_id);
+                            ipsRegistry::DB('auth_DB')->update('account_access', array('gmlevel' => $myGroup['syncapp_group_permission_levels']), "id=".$account_id);
                         }
                     }
                 }
@@ -489,7 +448,7 @@ class syncAppMemberSync
         /**
          * This method is run after a users display name is successfully changed
          *
-         * @param       integer $id                     Member ID
+         * @param       integer $id             Member ID
          * @param       string  $new_name       New display name
          * @return      @e void
          */

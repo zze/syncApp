@@ -196,7 +196,9 @@ class usercpForms_syncApp extends public_core_usercp_manualResolver implements i
                 $characters         =   array();
                 $databases          =   array();
 
-                require_once( IPS_ROOT_PATH . '../conf_multiRealm.php' );
+                include( IPS_ROOT_PATH . '../conf_multiRealm.php' );
+				if (!count($databases)>0)
+				{ return '<b>Error:</b> <b>conf_multiRealm.php</b> missing from: <b>'.IPS_ROOT_PATH.'</b> <br>Did you copy it from the syncApp repo?'; }
 
                 /* Debug */
                 //print_r($databases[$id]);

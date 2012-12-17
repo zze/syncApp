@@ -18,12 +18,12 @@
 
 //$TABLE[] = "ALTER TABLE groups ADD syncapp_group_id TINYINT(1) NOT NULL DEFAULT '0';";
 $TABLE[] = "ALTER TABLE groups ADD syncapp_realm_id TINYINT(1) NOT NULL DEFAULT '-1';";
-$TABLE[] = "ALTER TABLE groups ADD syncapp_server_prem TINYINT(1) NOT NULL DEFAULT '0';";
+$TABLE[] = "ALTER TABLE groups ADD syncapp_group_permission_levels TINYINT(1) NOT NULL DEFAULT '0';";
 
 $TABLE[] = "CREATE TABLE syncapp_members (
-  forum_id int(200) NOT NULL,
-  account_id int(200) NOT NULL,
-  deleted int(1) NOT NULL,
+  forum_id INT(10) NOT NULL,
+  account_id INT(10) NOT NULL,
+  deleted TINYINT(1) NOT NULL,
   PRIMARY KEY  (forum_id)
 );";
 

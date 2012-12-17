@@ -24,15 +24,15 @@ class admin_syncApp_syncacp_settings extends ipsCommand
             // Set up some shortcuts for our urls
             //-----------------------------------------
 
-            $this->form_code        = 'module=syncacp&amp;section=settings';
-            $this->form_code_js     = 'module=syncacp&section=settings';
+            $this->form_code      = 'module=syncacp&amp;section=settings';
+            $this->form_code_js   = 'module=syncacp&section=settings';
 
             //-------------------------------
             // Grab the settings controller, instantiate and set up shortcuts
             //-------------------------------
 
             $classToLoad = IPSLib::loadActionOverloader( IPSLib::getAppDir('core') . '/modules_admin/settings/settings.php', 'admin_core_settings_settings' );
-            $settings       = new $classToLoad();
+            $settings    = new $classToLoad();
             $settings->makeRegistryShortcuts( $this->registry );
 
             //-------------------------------
@@ -45,7 +45,7 @@ class admin_syncApp_syncacp_settings extends ipsCommand
             // Load the skin file the settings file will need and pass shortcuts
             //-------------------------------
 
-            $settings->html                 = $this->registry->output->loadTemplate( 'cp_skin_settings', 'core' );
+            $settings->html         = $this->registry->output->loadTemplate( 'cp_skin_settings', 'core' );
             $settings->form_code    = $settings->html->form_code    = 'module=settings&amp;section=settings';
             $settings->form_code_js = $settings->html->form_code_js = 'module=settings&section=settings';
 
@@ -57,7 +57,7 @@ class admin_syncApp_syncacp_settings extends ipsCommand
             //-------------------------------
             // Here we specify where to send the admin after submitting the form
             //-------------------------------
-            $settings->return_after_save         = $this->settings['base_url'] . $this->form_code;
+            $settings->return_after_save = $this->settings['base_url'] . $this->form_code;
 
             //-------------------------------
             // View the settings configuration page

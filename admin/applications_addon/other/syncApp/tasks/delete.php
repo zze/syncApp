@@ -61,14 +61,13 @@ class task_item
         {
             /* Make registry objects */
             $this->registry = $registry;
-            $this->DB               = $registry->DB();
+            $this->DB       = $registry->DB();
             $this->settings = ipsRegistry::fetchSettings();
-            $this->lang             = $this->registry->getClass('class_localization');
-
+            $this->lang     = $this->registry->getClass('class_localization');
             $this->class    = $class;
-            $this->task             = $task;
+            $this->task     = $task;
 
-            $this->registry->dbFunctions()->setDB( 'mysql', 'world_DB', array(
+            $this->registry->dbFunctions()->setDB( 'mysql', 'Auth_DB', array(
                       'sql_database'                  => $this->settings['syncapp_realm_database'],
                       'sql_user'                      => $this->settings['syncapp_mysql_user'],
                       'sql_pass'                      => $this->settings['syncapp_mysql_password'],
@@ -82,9 +81,9 @@ class task_item
             {
                 $cliente = new SoapClient(NULL, array(
                     "location" => $this->settings['syncapp_soap_ip'], //"http://127.0.0.1:7878/",
-                    "uri"   => "urn:TC",
-                    "style" => SOAP_RPC,
-                    "login" => $this->settings['syncapp_soap_user'],
+                    "uri"      => "urn:TC",
+                    "style"    => SOAP_RPC,
+                    "login"    => $this->settings['syncapp_soap_user'],
                     "password" => $this->settings['syncapp_soap_password']));
 
             $result = $cliente->executeCommand(new SoapParam($command, "command"));
@@ -117,19 +116,19 @@ class task_item
                     {
                         $members[] = $mems['account_id'];
                     }
-                    ipsRegistry::DB('world_DB')->freeResult($memdb);
+                    ipsRegistry::DB('Auth_DB')->freeResult($memdb);
                  if(count($members)>0)
                     {
                         $account = array();
-                        ipsRegistry::DB('world_DB')->build(array('select' => 'username, id', 'from' => 'account', 'where' => "id IN('".implode("','", $members)."')"));
-                        $acctdb =  ipsRegistry::DB('world_DB')->execute();
+                        ipsRegistry::DB('Auth_DB')->build(array('select' => 'username, id', 'from' => 'account', 'where' => "id IN('".implode("','", $members)."')"));
+                        $acctdb =  ipsRegistry::DB('Auth_DB')->execute();
 
-                    while( $accts = ipsRegistry::DB('world_DB')->fetch($acctdb))
+                    while( $accts = ipsRegistry::DB('Auth_DB')->fetch($acctdb))
                         {
                             $account[$accts['id']] = $accts['username'];
                         }
                     }
-                    ipsRegistry::DB('world_DB')->freeResult($acctdb);
+                    ipsRegistry::DB('Auth_DB')->freeResult($acctdb);
 
                     if(count($account)>0)
                     {
