@@ -42,7 +42,7 @@ class admin_group_form__syncApp implements admin_group_form
     {
         return array(
         'syncapp_realm_id' => intval(ipsRegistry::$request['syncapp_realm_id']),
-        'syncapp_server_prem' => intval(ipsRegistry::$request['syncapp_server_prem'])
+        'syncapp_group_permission_levels' => intval(ipsRegistry::$request['syncapp_group_permission_levels'])
         );
     }
 }
